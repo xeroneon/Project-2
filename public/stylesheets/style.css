@@ -1,0 +1,41 @@
+body {
+    background-color: #FFF;
+}
+
+nav {
+    background-color: #7B8AC1;
+}
+
+
+/*--------------- Overwriting materialize form colors */
+   /* label color*/
+.input-field input {
+    color: #FFF !important;
+}
+.input-field label {
+    color: #FFF;
+}
+/* label focus color */
+.input-field input[type=text]:focus + label {
+  color: #FFF;
+}
+/* label underline focus color */
+.input-field input[type=text]:focus {
+  border-bottom: 1px solid #FFF;
+  box-shadow: 0 1px 0 0 #000;
+}
+/* valid color */
+.input-field input[type=text].valid {
+  border-bottom: 1px solid #FFF;
+  box-shadow: 0 1px 0 0 #000;
+}
+/* invalid color */
+.input-field input[type=text].invalid {
+  border-bottom: 1px solid #FFF;
+  box-shadow: 0 1px 0 0 #000;
+}
+/* icon prefix focus color */
+.input-field .prefix.active {
+  color: #FFF;
+}
+      
