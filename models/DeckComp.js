@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-    const DeckComp = sequelize.define("Deck", {
+    const DeckComp = sequelize.define("DeckComp", {
         deck_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -10,24 +10,24 @@ module.exports = function (sequelize, DataTypes) {
         },
         card_quantity: {
             type: DataTypes.INTEGER,
-            allowNull: false
-            // TODO: limit quantity to 60
+            allowNull: false,
+            max: 4
         }
     });
 
-    Deck.associate = function (models) {
-        Deck.hasMany(models.DeckComp, {
+    DeckComp.associate = function (models) {
+        DeckComp.belongsTo(models.Card, {
             onDelete: "cascade"
         });
     };
 
-    Deck.associate = function (models) {
-        Deck.belongsTo(models.User, {
+    DeckComp.associate = function (models) {
+        DeckComp.belongsTo(models.Deck, {
             foreignKey: {
                 allowNull: false
             }
         });
     };
 
-    return Deck;
+    return DeckComp;
 };

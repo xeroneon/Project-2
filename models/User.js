@@ -12,10 +12,15 @@ module.exports = function (sequelize, DataTypes) {
             defaultValue: DataTypes.UUIDV1,
             primaryKey: true
         }, */
-        /* user_password: {
+        user_email: {
             type: DataTypes.STRING,
-            allowNull: false,
-        }, */
+            isEmail: true,
+            allowNull: false
+        },
+        user_password: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         user_name: {
             type: DataTypes.STRING,
             allowNull: false,
