@@ -2,7 +2,7 @@ $("#submit").on("click", function() {
     event.preventDefault();
     //create a user object here from the form values
     const newUser = {
-        email: $("#email").val().trim(),
+        user_email: $("#email").val().trim(),
         user_password: $("#password").val().trim()
     };
     //route to hit when a user logs in

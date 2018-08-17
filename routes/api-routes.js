@@ -11,7 +11,7 @@ module.exports = function(app) {
     //route hit when a user logs in
     app.post("/api/login", function(req, res) {
         //use sequelize to find their account by email
-        db.User.findOne({where: {email: req.body.email}}).then(user => {
+        db.User.findOne({where: {user_email: req.body.user_email}}).then(user => {
             //then using a method created on the user model authorizes and checks hashed password and if it returns true(correct password) send back that they are authorized
             if (user.Authorize(req.body.user_password)) {
                 //sends back whether the user is authorized
