@@ -3,7 +3,7 @@
   margin: 0;
 }
 
-body {
+#wrapper {
     background-color: #FFF;
     display: grid;
     grid-template-columns: 5fr 21fr;
