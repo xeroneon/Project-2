@@ -22,4 +22,14 @@ module.exports = function(app) {
             }
         })
     })
+    app.get("/api/users/:id", (req,res) => {
+        db.User.findOne({
+            where: {
+                user_id: req.params.id
+            },
+            include: [db.Deck]
+        }).then( user => {
+            res.json( user )
+        });
+    });
 };

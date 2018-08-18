@@ -1,6 +1,6 @@
 module.exports = function (sequelize, DataTypes) {
-    const DeckComp = sequelize.define("DeckComp", {
-        deck_id: {
+    const Collection = sequelize.define("Collection", {
+        user_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
@@ -15,8 +15,17 @@ module.exports = function (sequelize, DataTypes) {
         }
     });
 
-    DeckComp.associate = function (models) {
-        DeckComp.belongsTo(models.Card, {
+    Collection.associate = function (models) {
+        Collection.belongsTo(models.Card, {
+            foreignKey: {
+                allowNull: false
+            },
+            onDelete: "cascade"
+        });
+    };
+    
+    Collection.associate = function (models) {
+        Collection.belongsTo(models.User, {
             foreignKey: {
                 allowNull: false
             },
@@ -24,14 +33,5 @@ module.exports = function (sequelize, DataTypes) {
         });
     };
 
-    DeckComp.associate = function (models) {
-        DeckComp.belongsTo(models.Deck, {
-            foreignKey: {
-                allowNull: false
-            },
-            onDelete: "cascade"
-        });
-    };
-
-    return DeckComp;
+    return Collection;
 };
