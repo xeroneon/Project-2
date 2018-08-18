@@ -1,9 +1,9 @@
-$("#submit").on("click", function() {
+$("#login").on("click", function() {
     event.preventDefault();
     //create a user object here from the form values
     const newUser = {
-        user_email: $("#email").val().trim(),
-        user_password: $("#password").val().trim()
+        user_name: $("#user_name").val().trim(),
+        user_password: $("#user_password").val().trim()
     };
     //route to hit when a user logs in
     $.ajax("/api/login", {
