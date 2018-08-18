@@ -1,37 +1,40 @@
-<nav class="row">
-    <div class="col s6">
-        Placeholder logo
-    </div>
+<div id="login-wrapper">
 
-    <form class="col s6">
-        <div class="row">
-            <div class="input-field col s4">
-                <input id="email" type="text" class="validate">
-                <label for="email">Email</label>
-            </div>
-            <div class="input-field col s4">
-                <input id="password" type="password" class="validate">
-                <label for="password">Password</label>
-            </div>
-            <div class="col s4">
-                <button class="btn waves-effect waves-light" type="submit" name="action" id="submit">Login</button>
-            </div>
+    <div class="login-page">
+        <div class="form">
+            <form class="registration-form">
+                <input type="text" placeholder="First Name" id="register_first_name">
+                <input type="text" placeholder="Last Name" id="register_last_name">
+                <input type="text" placeholder="user name" id="register_user_name">
+                <input type="text" placeholder="password" id="register_password">
+                <input type="text" placeholder="email" id="register_email">
+                <button id="register">Register</button>
+                <p class="message">Already a Member?
+                    <a href="#">Login</a>
+                </p>
+            </form>
 
-        </div>
-    </form>
-
-</nav>
-
-
-
-<main class="container">
-    <div class="row">
-        <div class="col 12">
-            <h1>Placeholder title</h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, autem et unde asperiores, eum alias neque dolorem
-                hic nihil nulla repudiandae error sit nostrum obcaecati? Vitae odit id praesentium quod.</p>
+            <form class="login-form">
+                <input type="text" placeholder="user name" id="user_name">
+                <input type="password" placeholder="password" id="user_password">
+                <button id="login">Login</button>
+                <p class="message">Not a Member?
+                    <a href="#">Register</a>
+                </p>
+            </form>
         </div>
     </div>
-</main>
+
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
+<script>
+    $(".message a").click(function () {
+        $("form").animate({ height: "toggle", opacity: "toggle" }, "slow")
+    });
+</script>
 
 <script type="text/javascript" src="javascript/login.js"></script>
+<script type="text/javascript" src="javascript/register.js"></script>
