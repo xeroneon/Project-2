@@ -1,3 +1,4 @@
+// TODO: See if it's possible to define a column as a foreign key to another table in its definition
 module.exports = function (sequelize, DataTypes) {
     const Deck = sequelize.define("Deck", {
         deck_id: {

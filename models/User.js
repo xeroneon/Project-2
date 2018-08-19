@@ -8,12 +8,6 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false,
             primaryKey: true
         },
-        // TODO: Research whether or not we should use UUIDs and/or a password column
-        /* uuid: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV1,
-            primaryKey: true
-        }, */
         user_email: {
             type: DataTypes.STRING,
             isEmail: true,
@@ -37,10 +31,23 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true
         }
     });
-
+    /* 
+        User.associate = function (models) {
+            User.hasMany(models.Deck, {
+                onDelete: "cascade"
+            });
+        };
+    
+        User.associate = function (models) {
+            User.hasMany(models.Collection, {
+                onDelete: "cascade"
+            });
+        };
+     */
     User.associate = function (models) {
-        User.hasMany(models.Deck, {
-            onDelete: "cascade"
+        User.belongsToMany(models.Card, {
+            through: models.Collection,
+            foreignKey: "user_id"
         });
     };
 

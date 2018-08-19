@@ -24,14 +24,43 @@ module.exports = function(app) {
             }
         })
     })
+    // Get all decks for a given user
     app.get("/api/users/:id", (req,res) => {
         db.User.findOne({
             where: {
                 user_id: req.params.id
             },
-            include: [db.Deck]
+            include: [{
+                model: db.Card
+            }]
         }).then( user => {
             res.json( user )
+        });
+    });
+    // Add a card to a user's collection. Requires the following req object:
+    /*{
+        user_id: (integer),
+        card_id: (integer),
+        card_quantity: (integer)
+    }*/
+    app.post("/api/collections", (req, res) => {
+        db.Collection
+        .create( req.body )
+        .then( result => {
+            res.json( result );
+        });
+    });
+    // Add cards to database. Requires at least the following fields in the req object:
+    /* {
+        card_id: (integer),
+        card_name: (string)
+    } */
+    app.post("/api/cards/create", (req, res) => {
+        db.Card
+        .create( req.body )
+        .then ( card => {
+            res.json( card );
+            console.log( card.get("card_name") + " created." );
         });
     });
 };

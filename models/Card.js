@@ -1,7 +1,6 @@
 module.exports = function (sequelize, DataTypes) {
     const Card = sequelize.define("Card", {
         card_id: {
-            autoIncrement: true,
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true
@@ -35,12 +34,32 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true
         },
     });
-
+/* 
     Card.associate = function (models) {
         Card.hasMany(models.DeckComp, {
             onDelete: "cascade"
         });
     };
 
+    Card.associate = function (models) {
+        Card.hasMany(models.Collection, {
+            onDelete: "cascade"
+        });
+    };
+ */
+    Card.associate = function (models) {
+        Card.belongsToMany(models.User, {
+            through: models.Collection,
+            foreignKey: "card_id"
+        });
+    };
+/* 
+    Card.beforeCreate( card => {
+        Card.findOne()
+        if ( [condition that returns true if the card exists] ) {
+          throw new Error("Card ID already exists.")
+        };
+      });
+ */
     return Card;
 };
