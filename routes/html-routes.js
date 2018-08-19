@@ -33,18 +33,55 @@ module.exports = function (app) {
 
     app.get("/dashboard", function (req, res) {
         console.log(req.cookies.user_password)
+        // let hbsObj = {};
+        db.User.findOne(
+            {
+                where: {
+                    user_name: req.cookies.user_name
+                }
+            }
+        ).then(user => {
+            let hbsObj = {
+                user: user
+            }
+            db.Deck.findOne(
+                {
+                    where: {
+                        UserUserId: user.dataValues.user_id,
+                        deck_name: "Collection"
+                    }
+                }
+            ).then(deck => {
+                db.DeckComp.findOne(
+                    {
+                        where: {
+                            DeckDeckId: deck.dataValues.deck_id
+                        }
+                    }
+                ).then(deckComp => {
+                    db.Card.findAll(
+                        {
+                            where: {
+                                DeckCompDeckCompId: deckComp.dataValues.deck_comp_id 
+                            }
+                        }
+                    ).then(card => {
+                        console.log(card)
+                        // let hbsObj = {
+                        //     card: card
+                        // }
 
-        db.Card.findAll({}).then(results => {
-            // console.log(results);
-            const hbsObj = {
-                cards: results
-            };
-
-            // hbsObj.card = results;
-
-            console.log(hbsObj.cards[0].dataValues);
-            res.render("dashboard", hbsObj);
+                        hbsObj.card = card
+                        // hbsObj.card = card;
+                        console.log(hbsObj);
+                        res.render("dashboard", hbsObj);
+                    })
+                })
+            })
         })
+
+
+
     })
 
     app.get("/test", function (req, res) {

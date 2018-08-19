@@ -37,7 +37,7 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     Card.associate = function (models) {
-        Card.hasMany(models.DeckComp, {
+        Card.belongsTo(models.DeckComp, {
             onDelete: "cascade"
         });
     };
