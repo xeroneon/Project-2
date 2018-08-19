@@ -20,7 +20,8 @@ module.exports = function (sequelize, DataTypes) {
         },
         card_image: {
             type: DataTypes.STRING,
-            allowNull: true
+            allowNull: true,
+            defaultValue: "/images/placeholder.png"
         },
         card_artist: {
             type: DataTypes.STRING,

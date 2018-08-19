@@ -31,7 +31,7 @@
 
             <div id="all-cards" class="row">
                 {{#each card}}
-                <div class="col s3" id="card-container">
+                <div class="col s3" id="card-container" data-id="{{card_id}}">
                     <img src="{{card_image}}">
                     <p>{{card_name}}</p>
                     <p>{{card_description}}</p>
