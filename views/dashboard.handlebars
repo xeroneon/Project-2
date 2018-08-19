@@ -2,7 +2,7 @@
     <div id="nav">
         <img src="/images/andrew-vasquez.jpg" id="user_image" class="circle">
 
-        <h4 id="username">John Doe</h4>
+        <h4 id="username">{{user.user_name}}</h4>
 
         <ul>
             <li>
@@ -25,16 +25,18 @@
             <h3 id="title">Collection
                 <hr>
             </h3>
+            <button id="add-card" class="waves-effect waves-light modal-trigger" href="#modal1">+ Add Card</button>
             {{!--
-            <button id="add-card">+ Add Card</button> --}}
-            <a id="add-card" class="waves-effect waves-light btn modal-trigger" href="#modal1">+ Add Card</a>
+            <a id="add-card" class="waves-effect waves-light modal-trigger" href="#modal1">+ Add Card</a> --}}
 
-            <div id="all-cards">
-                <div>
-                    <img src="{{cards.0.dataValues.card_image}}">
-                    <p>{{cards.0.dataValues.card_name}}</p>
-                    <p>{{cards.0.dataValues.card_description}}</p>
+            <div id="all-cards" class="row">
+                {{#each card}}
+                <div class="col s3" id="card-container" data-id="{{card_id}}">
+                    <img src="{{card_image}}">
+                    <p>{{card_name}}</p>
+                    <p>{{card_description}}</p>
                 </div>
+                {{/each}}
             </div>
 
         </div>
@@ -45,10 +47,11 @@
         <div id="modal1" class="modal">
             <div class="modal-content">
                 <h4>Search for a card</h4>
-                <input type="text" id="search-val" placeholder="Card Name">
-                {{!-- <button id="search-card">Search</button> --}}
+                <input type="text" id="search-val" placeholder="Card Name"> {{!--
+                <button id="search-card">Search</button> --}}
             </div>
             <div class="modal-footer">
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
                 <a href="#!" class="waves-effect waves-green btn-flat" id="search-card">Search</a>
             </div>
         </div>

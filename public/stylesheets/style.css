@@ -108,6 +108,10 @@ main #title {
   grid-area: all-cards;
 }
 
+#card-container {
+  height: 400px;
+}
+
 #login-wrapper {
   width: 100vw;
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/magic_the_gathering_symbols_by_thekagestar-d37388h.png);

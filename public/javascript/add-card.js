@@ -1,4 +1,4 @@
-$("#search-card").on("click", function() {
+$("#search-card").on("click", function () {
     event.preventDefault();
 
     console.log("clicked")
@@ -11,12 +11,12 @@ $("#search-card").on("click", function() {
         type: "POST",
         //user the new user object and send it to the route
         data: newCard
-    }).then(function(res) {
+    }).then(function (res) {
         console.log(res[0])
-        if(res[0].imageUrl) {
-            var cardImage = $("<img>").attr("src", res[0].imageUrl);
-            cardImage.attr("id", "card-image");
-        }
+
+        var cardImage = $("<img>").attr("src", res[0].imageUrl);
+        cardImage.attr("id", "card-image");
+
 
         cardName = $("<p>").append(res[0].name);
         cardName.attr("id", "card-name");
@@ -31,7 +31,7 @@ $("#search-card").on("click", function() {
         addCard.attr("class", "waves-effect waves-green btn-flat");
         addCard.attr("id", "send-card");
 
-        
+
         $(".modal-content").append(cardImage);
         $(".modal-content").append(cardName);
         $(".modal-content").append(manaCost);
@@ -42,7 +42,7 @@ $("#search-card").on("click", function() {
     })
 })
 
-$("body").on("click", "#send-card", function() {
+$("body").on("click", "#send-card", function () {
     console.log($("#card-name").text());
 
     const newCard = {
@@ -53,7 +53,7 @@ $("body").on("click", "#send-card", function() {
         type: "POST",
         //user the new user object and send it to the route
         data: newCard
-    }).then(function(res) {
+    }).then(function (res) {
         console.log(res);
 
 

@@ -20,7 +20,8 @@ module.exports = function (sequelize, DataTypes) {
         },
         card_image: {
             type: DataTypes.STRING,
-            allowNull: true
+            allowNull: true,
+            defaultValue: "/images/placeholder.png"
         },
         card_artist: {
             type: DataTypes.STRING,
@@ -37,7 +38,7 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     Card.associate = function (models) {
-        Card.hasMany(models.DeckComp, {
+        Card.belongsTo(models.DeckComp, {
             onDelete: "cascade"
         });
     };

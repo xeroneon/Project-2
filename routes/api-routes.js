@@ -8,7 +8,30 @@ module.exports = function (app) {
         req.body.user_password = newUser.genHash(req.body.user_password);
         db.User.create(req.body).then(function (results) {
             res.json(results);
-        })
+        }).then(function () {
+            db.User.findOne({
+                where: {
+                    user_name: req.body.user_name
+                }
+            }).then(user => {
+                // console.log(user)
+                db.Deck.create({
+                    deck_name: "Collection",
+                    UserUserId: user.dataValues.user_id
+                }).then(deck => {
+                    db.Deck.findOne({
+                        where: {
+                            deck_id: deck.dataValues.deck_id
+                        }
+                    }).then(deck => {
+                        db.DeckComp.create({
+                            DeckDeckId: deck.dataValues.deck_id
+                        })
+                    })
+                })
+            })
+        });
+        console.log(req.body)
     })
     //route hit when a user logs in
     app.post("/api/login", function (req, res) {
@@ -30,7 +53,7 @@ module.exports = function (app) {
     app.post("/api/search-card", function (req, res) {
         let cardName = req.body.cardName;
 
-            mtg.card.where({ name: cardName, pageSize: 1 })
+        mtg.card.where({ name: cardName, pageSize: 1 })
             .then(card => {
                 res.json(card);
             })
@@ -41,7 +64,7 @@ module.exports = function (app) {
     app.post("/api/add-card", function (req, res) {
         let cardName = req.body.cardName;
 
-            mtg.card.where({ name: cardName, pageSize: 1 })
+        mtg.card.where({ name: cardName, pageSize: 1 })
             .then(card => {
                 // res.json(card);
 
@@ -54,10 +77,39 @@ module.exports = function (app) {
                     card_mana_cost: card[0].manaCost,
                 }
 
-                db.Card.create(newCard).then(function(results) {
-                    console.log("card Created")
-                    res.json(results)
-                })
+                // db.Card.create(newCard).then(function (results) {
+                //     console.log("card Created")
+                //     // res.json(results)
+                // }).then(card => {
+                    db.User.findOne({
+                        where: {
+                            user_name: req.cookies.user_name
+                        }
+                    }).then(user => {
+                        db.Deck.findOne(
+                            {
+                                where: {
+                                    UserUserId: user.dataValues.user_id 
+                                }
+                            }
+                        ).then(deck => {
+                            db.DeckComp.findOne(
+                                {
+                                    where: {
+                                        DeckDeckId: deck.dataValues.deck_id
+                                    }
+                                }
+                            ).then(deckComp => {
+                                // console.log("worked");
+                                newCard.DeckCompDeckCompId = deckComp.dataValues.deck_comp_id
+
+                                db.Card.create(newCard).then(card => {
+                                    console.log("created")
+                                })
+                            })
+                        })
+                    })
+                // })
             })
 
 
