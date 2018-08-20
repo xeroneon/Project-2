@@ -55,7 +55,7 @@ $("body").on("click", "#send-card", function () {
         data: newCard
     }).then(function (res) {
         console.log(res);
-
+        window.location.reload();
 
     })
 })
