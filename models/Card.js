@@ -1,7 +1,7 @@
 module.exports = function (sequelize, DataTypes) {
     const Card = sequelize.define("Card", {
         card_id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true
         },
@@ -13,7 +13,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true
         },
-        card_edition: {
+        card_set: {
             type: DataTypes.STRING,
             allowNull: true
         },
@@ -34,25 +34,14 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true
         },
     });
-/* 
-    Card.associate = function (models) {
-        Card.hasMany(models.DeckComp, {
-            onDelete: "cascade"
-        });
-    };
 
     Card.associate = function (models) {
-        Card.hasMany(models.Collection, {
-            onDelete: "cascade"
-        });
-    };
- */
-    Card.associate = function (models) {
-        Card.belongsToMany(models.User, {
-            through: models.Collection,
+        Card.belongsToMany(models.Deck, {
+            through: models.DeckComp,
             foreignKey: "card_id"
         });
     };
+
 /* 
     Card.beforeCreate( card => {
         Card.findOne()

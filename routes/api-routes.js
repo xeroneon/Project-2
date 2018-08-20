@@ -1,3 +1,9 @@
+/* 
+    We may want to consider further encapsulating our API routes by creating new directories in the
+    routes folder, e.g., routes/api/users, routes/api/decks, routes/api/cards. I think that this
+    may help to isolate issues and prevent us from working on the same files at the same time.
+*/
+
 const db = require("../models");
 
 module.exports = function(app) {
@@ -31,31 +37,39 @@ module.exports = function(app) {
                 user_id: req.params.id
             },
             include: [{
-                model: db.Card
+                model: db.Deck
             }]
         }).then( user => {
             res.json( user )
         });
     });
-    // Add a card to a user's collection. Requires the following req object:
+    // Add a deck to a user. Requires the following req object:
     /*{
         user_id: (integer),
-        card_id: (integer),
-        card_quantity: (integer)
+        deck_name: (integer),
     }*/
-    app.post("/api/collections", (req, res) => {
-        db.Collection
+    app.post("/api/decks", (req, res) => {
+        db.Deck
         .create( req.body )
         .then( result => {
             res.json( result );
         });
     });
-    // Add cards to database. Requires at least the following fields in the req object:
+
+    // TODO Add a card to a user's deck. Requires the following req object:
+    /*{
+
+    }*/
+    /* app.post("/api/decks/", (req, res) => {
+
+    }); */
+
+    // Add cards to the database. Requires at least the following fields in the req object:
     /* {
         card_id: (integer),
         card_name: (string)
     } */
-    app.post("/api/cards/create", (req, res) => {
+    app.post("/api/cards", (req, res) => {
         db.Card
         .create( req.body )
         .then ( card => {
@@ -63,4 +77,20 @@ module.exports = function(app) {
             console.log( card.get("card_name") + " created." );
         });
     });
+
+    // TODO Delete deck from a user's account
+    /* {
+
+    } */
+    /* app.delete("/api/decks", (req, res) => {
+
+    }); */
+
+    // TODO Delete card from a user's deck
+    /* {
+
+    } */
+    /* app.delete("/api/decks", (req, res) => {
+
+    }); */
 };

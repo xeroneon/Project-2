@@ -1,37 +1,9 @@
 module.exports = function (sequelize, DataTypes) {
     const DeckComp = sequelize.define("DeckComp", {
-        deck_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
-        card_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
         card_quantity: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            max: 4
+            type: DataTypes.INTEGER
         }
     });
-
-    DeckComp.associate = function (models) {
-        DeckComp.belongsTo(models.Card, {
-            foreignKey: {
-                allowNull: false
-            },
-            onDelete: "cascade"
-        });
-    };
-
-    DeckComp.associate = function (models) {
-        DeckComp.belongsTo(models.Deck, {
-            foreignKey: {
-                allowNull: false
-            },
-            onDelete: "cascade"
-        });
-    };
 
     return DeckComp;
 };

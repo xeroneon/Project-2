@@ -31,33 +31,20 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true
         }
     });
-    /* 
-        User.associate = function (models) {
-            User.hasMany(models.Deck, {
-                onDelete: "cascade"
-            });
-        };
-    
-        User.associate = function (models) {
-            User.hasMany(models.Collection, {
-                onDelete: "cascade"
-            });
-        };
-     */
+
     User.associate = function (models) {
-        User.belongsToMany(models.Card, {
-            through: models.Collection,
+        User.hasMany(models.Deck, {
             foreignKey: "user_id"
         });
     };
 
     User.prototype.genHash = function (password) {
         return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-    }
+    };
 
     User.prototype.Authorize = function (password) {
         return bcrypt.compareSync(password, this.user_password);
-    }
+    };
 
     return User;
 };
