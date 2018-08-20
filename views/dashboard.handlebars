@@ -31,11 +31,11 @@
 
             <div id="all-cards" class="row">
                 {{#each card}}
-                <div class="col s3" id="card-container" data-id="{{card_id}}">
+                <div class="col s3" id="card-container">
                     <img src="{{card_image}}">
                     <p>{{card_name}}</p>
                     <p>{{card_description}}</p>
-                <button class="round-btn" id="remove-card">Remove Card</button>
+                    <button class="round-btn" id="remove-card" data-id="{{card_id}}">Remove Card</button>
                 </div>
                 {{/each}}
             </div>
@@ -60,3 +60,4 @@
 </div>
 
 <script type="text/javascript" src="javascript/add-card.js"></script>
+<script type="text/javascript" src="javascript/remove-card.js"></script>

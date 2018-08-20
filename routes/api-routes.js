@@ -105,6 +105,8 @@ module.exports = function (app) {
 
                                 db.Card.create(newCard).then(card => {
                                     console.log("created")
+                                }).then(function() {
+                                    res.end();
                                 })
                             })
                         })
@@ -112,6 +114,19 @@ module.exports = function (app) {
                 // })
             })
 
+
+    })
+
+    app.post("/api/remove-card/:id", function(req, res) {
+        db.Card.destroy(
+            {
+                where: {
+                    card_id: req.params.id
+                }
+            }
+        ).then(function() {
+            res.end();
+        })
 
     })
 };
