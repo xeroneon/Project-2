@@ -65,6 +65,10 @@ main {
   overflow-x: hidden;
 }
 
+.material-icons:hover {
+  cursor: pointer;
+}
+
 main #con {
   padding-left: 10%;
   padding-top: 5%;
