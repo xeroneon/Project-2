@@ -106,27 +106,27 @@ module.exports = function (app) {
         });
 
 
-        // var options = {
-        //     method: 'POST',
-        //     headers: {
-        //         Authorization: "bearer " + process.env.BEARER_TOKEN
-        //     },
-        //     url: 'http://api.tcgplayer.com/catalog/categories/1/search',
-        //     body:
-        //     {
-        //         filters: [{ name: 'productName', values: 'Black Lotus' }],
-        //         includeAggregates: 'true'
-        //     },
-        //     json: true
-        // };
+        var options = {
+            method: 'POST',
+            headers: {
+                Authorization: "bearer " + process.env.BEARER_TOKEN
+            },
+            url: 'http://api.tcgplayer.com/catalog/categories/1/search',
+            body:
+            {
+                filters: [{ name: 'productName', values: 'Black Lotus' }],
+                includeAggregates: 'true'
+            },
+            json: true
+        };
 
-        // request(options, function (error, response, body) {
-        //     if (error) throw new Error(error);
+        request(options, function (error, response, body) {
+            if (error) throw new Error(error);
 
-        //     console.log(body);
+            console.log(body);
 
-        //     res.json(body)
-        // });
+            res.json(body)
+        });
 
         // res.render("login")
     })

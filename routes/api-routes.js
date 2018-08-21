@@ -129,4 +129,21 @@ module.exports = function (app) {
         })
 
     })
+
+    app.post("/api/add-deck/", function(req, res) {
+        db.User.findOne(
+            {
+                where: {
+                    user_name: req.cookies.user_name
+                }
+            }
+        ).then( user => {
+            let newDeck = {
+                deck_name: req.body.deck_name,
+                UserUserId: user.dataValues.user_id
+            }
+
+            db.Deck.create()
+        })
+    })
 };
