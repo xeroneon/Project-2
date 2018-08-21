@@ -70,14 +70,14 @@ module.exports = function (app) {
                             }
                         }
                     ).then(card => {
-                        console.log(card)
+                        // console.log(card)
                         // let hbsObj = {
                         //     card: card
                         // }
 
                         hbsObj.card = card
                         // hbsObj.card = card;
-                        console.log(hbsObj);
+                        // console.log(hbsObj);
                         res.render("dashboard", hbsObj);
                     })
                 })
