@@ -143,7 +143,9 @@ module.exports = function (app) {
                 UserUserId: user.dataValues.user_id
             }
 
-            db.Deck.create()
+            db.Deck.create(newDeck).then(deck => {
+                res.end();
+            })
         })
     })
 };
