@@ -31,6 +31,10 @@ module.exports = function (app) {
         res.render("register");
     })
 
+    app.get("/deckview", function (req, res) {
+        res.render("deckview");
+    });
+
     app.get("/dashboard", function (req, res) {
         console.log(req.cookies.user_password)
         // let hbsObj = {};
