@@ -14,16 +14,16 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     Deck.associate = function (models) {
-        Deck.hasMany(models.DeckComp, {
-            onDelete: "cascade"
+        Deck.belongsTo(models.User, {
+            foreignKey: "user_id",
+            allowNull: false
         });
     };
 
     Deck.associate = function (models) {
-        Deck.belongsTo(models.User, {
-            foreignKey: {
-                allowNull: false
-            }
+        Deck.belongsToMany(models.Card, {
+            through: models.DeckComp,
+            foreignKey: "deck_id"
         });
     };
 

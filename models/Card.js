@@ -1,8 +1,7 @@
 module.exports = function (sequelize, DataTypes) {
     const Card = sequelize.define("Card", {
         card_id: {
-            autoIncrement: true,
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true
         },
@@ -14,7 +13,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true
         },
-        card_edition: {
+        card_set: {
             type: DataTypes.STRING,
             allowNull: true
         },
@@ -38,10 +37,20 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     Card.associate = function (models) {
-        Card.belongsTo(models.DeckComp, {
-            onDelete: "cascade"
+
+        Card.belongsToMany(models.Deck, {
+            through: models.DeckComp,
+            foreignKey: "card_id"
         });
     };
 
+/* 
+    Card.beforeCreate( card => {
+        Card.findOne()
+        if ( [condition that returns true if the card exists] ) {
+          throw new Error("Card ID already exists.")
+        };
+      });
+ */
     return Card;
 };
