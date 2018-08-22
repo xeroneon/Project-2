@@ -1,6 +1,12 @@
-const db = require("../models");
+/* 
+    We may want to consider further encapsulating our API routes by creating new directories in the
+    routes folder, e.g., routes/api/users, routes/api/decks, routes/api/cards. I think that this
+    may help to isolate issues and prevent us from working on the same files at the same time.
+*/
 
-const mtg = require('mtgsdk');
+const db = require("../models");
+const mtg = require("mtgsdk");
+
 
 module.exports = function (app) {
     app.post("/api/users", function (req, res) {
@@ -8,32 +14,11 @@ module.exports = function (app) {
         req.body.user_password = newUser.genHash(req.body.user_password);
         db.User.create(req.body).then(function (results) {
             res.json(results);
-        }).then(function () {
-            db.User.findOne({
-                where: {
-                    user_name: req.body.user_name
-                }
-            }).then(user => {
-                // console.log(user)
-                db.Deck.create({
-                    deck_name: "Collection",
-                    UserUserId: user.dataValues.user_id
-                }).then(deck => {
-                    db.Deck.findOne({
-                        where: {
-                            deck_id: deck.dataValues.deck_id
-                        }
-                    }).then(deck => {
-                        db.DeckComp.create({
-                            DeckDeckId: deck.dataValues.deck_id
-                        })
-                    })
-                })
-            })
         });
-        console.log(req.body)
-    })
-    //route hit when a user logs in
+    });
+
+    // * Route hit when a user logs in
+
     app.post("/api/login", function (req, res) {
         //use sequelize to find their account by name
         db.User.findOne({ where: { user_name: req.body.user_name } }).then(user => {
@@ -50,102 +35,171 @@ module.exports = function (app) {
         })
     })
 
-    app.post("/api/search-card", function (req, res) {
-        let cardName = req.body.cardName;
 
-        mtg.card.where({ name: cardName, pageSize: 1 })
-            .then(card => {
-                res.json(card);
+    // * Get all decks for a given user
+    app.get("/api/users/:id", (req, res) => {
+        db.User.findOne({
+            where: {
+                user_id: req.params.id
+            },
+            include: [{
+                model: db.Deck
+            }]
+        }).then(user => {
+            res.json(user)
+        });
+    });
+
+    // * Test with  Add a deck to a user. Requires the following req object:
+    /*{
+        user_id: (integer),
+        deck_name: (string)
+    }*/
+    app.post("/api/decks", (req, res) => {
+        db.Deck
+            .create({
+                // user_id: req.cookies.user_id || req.body.user_id,
+                user_id: req.body.user_id,
+                deck_name: req.body.deck_name
+
             })
+            .then(result => {
+                res.json(result);
+            });
+    });
 
-
-    })
-
-    app.post("/api/add-card", function (req, res) {
-        let cardName = req.body.cardName;
-
-        mtg.card.where({ name: cardName, pageSize: 1 })
-            .then(card => {
-                // res.json(card);
-
-                let newCard = {
-                    card_name: card[0].name,
-                    card_description: card[0].text,
-                    card_edition: card[0].set,
-                    card_image: card[0].imageUrl,
-                    card_artist: card[0].artist,
-                    card_mana_cost: card[0].manaCost,
+    // TODO Add a card to a user's deck. Requires the following req object:
+    /*{
+        deck_id: (integer)
+        card_id: (string)
+        card_quantity: (integer)
+    }*/
+    app.post("/api/decks/add-card", (req, res) => {
+        db.Deck
+            .addCard(db.Card, {
+                through: {
+                    card_quantity: req.body.card_quantity
                 }
-
-                // db.Card.create(newCard).then(function (results) {
-                //     console.log("card Created")
-                //     // res.json(results)
-                // }).then(card => {
-                    db.User.findOne({
-                        where: {
-                            user_name: req.cookies.user_name
-                        }
-                    }).then(user => {
-                        db.Deck.findOne(
-                            {
-                                where: {
-                                    UserUserId: user.dataValues.user_id 
-                                }
-                            }
-                        ).then(deck => {
-                            db.DeckComp.findOne(
-                                {
-                                    where: {
-                                        DeckDeckId: deck.dataValues.deck_id
-                                    }
-                                }
-                            ).then(deckComp => {
-                                // console.log("worked");
-                                newCard.DeckCompDeckCompId = deckComp.dataValues.deck_comp_id
-
-                                db.Card.create(newCard).then(card => {
-                                    console.log("created")
-                                }).then(function() {
-                                    res.end();
-                                })
-                            })
-                        })
-                    })
-                // })
             })
+            .then(result => {
+                res.json(result);
+            });
+    });
 
-
-    })
-
-    app.post("/api/remove-card/:id", function(req, res) {
-        db.Card.destroy(
-            {
-                where: {
-                    card_id: req.params.id
-                }
+    // * Get a given Deck by ID
+    app.get("/api/decks/:id", (req, res) => {
+        /* db.Deck
+        .findAll({
+            where: {
+                deck_id: req.params.id
             }
-        ).then(function() {
-            res.end();
+        },
+        {
+            include: [{
+                model: db.Card
+            }]
+        }) */
+        const thisDeck = new db.Deck();
+
+        thisDeck.deck_id = req.params.id;
+
+        thisDeck
+            .getCards()
+            .then(result => {
+                res.json(result);
+            });
+    });
+
+    // * Add cards to the database. Requires the following fields in the req object:
+    /* {
+        cardID: (string),
+        cardName: (string),
+        cardFlavor: (string),
+        cardSet: (string),
+        cardRarity: (string),
+        cardMana: (string),
+        cardImage: (string),
+        cardArtist: (string)
+    } */
+    app.post("/api/cards", (req, res) => {
+        
+        const thisCard = req.body;
+        
+        db.Card
+        .findOrCreate( {
+            where: {
+                card_id: req.body.cardID
+            },
+            defaults: {
+                card_id : thisCard.cardID,
+                card_name: thisCard.cardName,
+                card_description: thisCard.cardFlavor,
+                card_set: thisCard.cardSet,
+                card_rarity: thisCard.cardRarity,
+                card_mana_cost: thisCard.cardMana,
+                card_image: thisCard.cardImage,
+                card_artist: thisCard.cardArtist
+            }
         })
-
-    })
-
-    app.post("/api/add-deck/", function(req, res) {
-        db.User.findOne(
-            {
-                where: {
-                    user_name: req.cookies.user_name
-                }
-            }
-        ).then( user => {
-            let newDeck = {
-                deck_name: req.body.deck_name,
-                UserUserId: user.dataValues.user_id
-            }
-
-            db.Deck.create(newDeck).then(deck => {
-                res.end();
-            })
+        .spread( (card, created) => {
+            return card;
         })
-    })
+        .then ( card => {
+            res.json( card );
+            console.log( card.get("card_name") + " created." );
+        });
+    });
+
+    // TODO Update card amount from a user's deck
+    /* {
+        
+    } */
+
+    // TODO Delete deck from a user's account
+    /* {
+        user_id: (integer),
+        deck_id: (integer)
+    } */
+    /* app.delete("/api/decks", (req, res) => {
+
+    }); */
+
+    // TODO Delete card from a user's deck
+    /* {
+        deck_id: (integer),
+        card_id: (string)
+    } */
+    /* app.delete("/api/decks", (req, res) => {
+
+    }); */
+
+    // * Search for an MTG card by name
+    /* POST object format:
+        {
+            cardName: (card name as string)
+        }
+    */
+    // Returns an array of all cards matching the searched-for card name.
+    app.post("/api/search-card", (req, res) => {
+
+        mtg.card.where({
+            name: req.body.cardName
+        })
+        .then( resultCards => {
+            responseCards = resultCards.map( card => {
+                return {
+                    cardID: card.id,
+                    cardName: card.name,
+                    cardFlavor: card.flavor,
+                    cardSet: card.setName,
+                    cardRarity: card.rarity,
+                    cardMana: card.manaCost,
+                    cardImage: card.imageUrl,
+                    cardArtist: card.artist
+                };
+            });
+            
+            res.json( responseCards );
+        });
+    });
 };

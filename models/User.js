@@ -8,12 +8,6 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false,
             primaryKey: true
         },
-        // TODO: Research whether or not we should use UUIDs and/or a password column
-        /* uuid: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV1,
-            primaryKey: true
-        }, */
         user_email: {
             type: DataTypes.STRING,
             isEmail: true,
@@ -40,17 +34,17 @@ module.exports = function (sequelize, DataTypes) {
 
     User.associate = function (models) {
         User.hasMany(models.Deck, {
-            onDelete: "cascade"
+            foreignKey: "user_id"
         });
     };
 
     User.prototype.genHash = function (password) {
         return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-    }
+    };
 
     User.prototype.Authorize = function (password) {
         return bcrypt.compareSync(password, this.user_password);
-    }
+    };
 
     return User;
 };
