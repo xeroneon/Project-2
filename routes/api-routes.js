@@ -7,34 +7,34 @@
 const db = require("../models");
 const mtg = require("mtgsdk");
 
-module.exports = function(app) {
-    app.post("/api/users", function(req, res) {
+module.exports = function (app) {
+    app.post("/api/users", function (req, res) {
         let newUser = new db.User();
         req.body.user_password = newUser.genHash(req.body.user_password);
-        db.User.create(req.body).then(function(results) {
+        db.User.create(req.body).then(function (results) {
             res.json(results);
         });
     });
 
     // * Route hit when a user logs in
-    app.post("/api/login", function(req, res) {
+    app.post("/api/login", function (req, res) {
         //use sequelize to find their account by name
-        db.User.findOne({where: {user_name: req.body.user_name}}).then(user => {
+        db.User.findOne({ where: { user_name: req.body.user_name } }).then(user => {
             //then using a method created on the user model authorizes and checks hashed password and if it returns true(correct password) send back that they are authorized
             if (user.Authorize(req.body.user_password)) {
                 //sends back whether the user is authorized
-                res.cookie("user_password", req.body.user_password, {maxAge: 1000 * 60 * 60 * 24});
-                res.cookie("user_name", req.body.user_name, {maxAge: 1000 * 60 * 60 *24});
-                res.json({Auth: true});
+                res.cookie("user_password", req.body.user_password, { maxAge: 1000 * 60 * 60 * 24 });
+                res.cookie("user_name", req.body.user_name, { maxAge: 1000 * 60 * 60 * 24 });
+                res.json({ Auth: true });
             } else {
                 //TODO => create logic for if the password is wrong here
                 console.log("not auth")
             }
         })
     })
-    
+
     // * Get all decks for a given user
-    app.get("/api/users/:id", (req,res) => {
+    app.get("/api/users/:id", (req, res) => {
         db.User.findOne({
             where: {
                 user_id: req.params.id
@@ -42,22 +42,25 @@ module.exports = function(app) {
             include: [{
                 model: db.Deck
             }]
-        }).then( user => {
-            res.json( user )
+        }).then(user => {
+            res.json(user)
         });
     });
-    
-    // * Add a deck to a user. Requires the following req object:
+
+    // TODO: Test with  Add a deck to a user. Requires the following req object:
     /*{
-        user_id: (integer),
-        deck_name: (integer),
+        // user_id: (integer),
+        deck_name: (integer)
     }*/
     app.post("/api/decks", (req, res) => {
         db.Deck
-        .create( req.body )
-        .then( result => {
-            res.json( result );
-        });
+            .create({
+                user_id: req.cookie.user_id,
+                deck_name: req.body.deck_name
+            })
+            .then(result => {
+                res.json(result);
+            });
     });
 
     // TODO Add a card to a user's deck. Requires the following req object:
@@ -68,18 +71,18 @@ module.exports = function(app) {
     }*/
     app.post("/api/decks/add-card", (req, res) => {
         db.Deck
-        .addCard( db.Card, {
-            through: {
-                card_quantity: req.body.card_quantity
+            .addCard(db.Card, {
+                through: {
+                    card_quantity: req.body.card_quantity
+                }
             }
-        }
-        )
-        .then ( result => {
-            res.json( result ); 
-        });
+            )
+            .then(result => {
+                res.json(result);
+            });
     });
 
-    // TODO: Get a given Deck by ID
+    // * Get a given Deck by ID
     app.get("/api/decks/:id", (req, res) => {
         /* db.Deck
         .findAll({
@@ -97,20 +100,46 @@ module.exports = function(app) {
         thisDeck.deck_id = req.params.id;
 
         thisDeck
-        .getCards()
-        .then ( result => {
-            res.json( result );
-        });
+            .getCards()
+            .then(result => {
+                res.json(result);
+            });
     });
 
-    // * Add cards to the database. Requires at least the following fields in the req object:
+    // * Add cards to the database. Requires the following fields in the req object:
     /* {
-        card_id: (string),
-        card_name: (string)
+        cardID: (string),
+        cardName: (string),
+        cardFlavor: (string),
+        cardSet: (string),
+        cardRarity: (string),
+        cardMana: (string),
+        cardImage: (string),
+        cardArtist: (string)
     } */
     app.post("/api/cards", (req, res) => {
+        
+        const thisCard = req.body;
+        
         db.Card
-        .create( req.body )
+        .findOrCreate( {
+            where: {
+                card_id: req.body.cardID
+            },
+            defaults: {
+                card_id : thisCard.cardID,
+                card_name: thisCard.cardName,
+                card_description: thisCard.cardFlavor,
+                card_set: thisCard.cardSet,
+                card_rarity: thisCard.cardRarity,
+                card_mana_cost: thisCard.cardMana,
+                card_image: thisCard.cardImage,
+                card_artist: thisCard.cardArtist
+            }
+        })
+        .spread( (card, created) => {
+            return card;
+        })
         .then ( card => {
             res.json( card );
             console.log( card.get("card_name") + " created." );
@@ -135,25 +164,39 @@ module.exports = function(app) {
 
     }); */
 
-    // TODO: Search for an MTG card by name
+    // * Search for an MTG card by name
+    /* POST object format:
+        {
+            cardName: (card name as string)
+        }
+    */
+    // Returns an array of all cards matching the searched-for card name.
     app.post("/api/search-card", (req, res) => {
-        let cardName = req.body.cardName;
 
         mtg.card.where({
-            name: cardName,
-            pageSize: 1
+            name: req.body.cardName
         })
-        .then( card => {
-            res.json({
-                cardID: card[0].id,
-                cardName: card[0].name,
-                cardFlavor: card[0].flavor,
-                cardSet: card[0].setName,
-                cardRarity: card[0].rarity,
-                cardMana: card[0].manaCost,
-                cardImage: card[0].imageUrl,
-                cardArtist: card[0].artist
+        .then( resultCards => {
+            responseCards = resultCards.map( card => {
+                return {
+                    cardID: card.id,
+                    cardName: card.name,
+                    cardFlavor: card.flavor,
+                    cardSet: card.setName,
+                    cardRarity: card.rarity,
+                    cardMana: card.manaCost,
+                    cardImage: card.imageUrl,
+                    cardArtist: card.artist
+                };
             });
+            
+            res.json( responseCards );
         });
     });
+
+
+    // TODO: Add a card to the database
+    /* app.post("/api/add-card", (req, res) => {
+        
+    }); */
 };
