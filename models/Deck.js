@@ -15,7 +15,8 @@ module.exports = function (sequelize, DataTypes) {
 
     Deck.associate = function (models) {
         Deck.belongsTo(models.User, {
-            foreignKey: "user_id"
+            foreignKey: "user_id",
+            allowNull: false
         });
     };
 

@@ -47,16 +47,18 @@ module.exports = function (app) {
         });
     });
 
-    // TODO: Test with  Add a deck to a user. Requires the following req object:
+    // * Test with  Add a deck to a user. Requires the following req object:
     /*{
-        // user_id: (integer),
-        deck_name: (integer)
+        user_id: (integer),
+        deck_name: (string)
     }*/
     app.post("/api/decks", (req, res) => {
         db.Deck
             .create({
-                user_id: req.cookie.user_id,
+                // user_id: req.cookies.user_id || req.body.user_id,
+                user_id: req.body.user_id,
                 deck_name: req.body.deck_name
+
             })
             .then(result => {
                 res.json(result);
@@ -75,8 +77,7 @@ module.exports = function (app) {
                 through: {
                     card_quantity: req.body.card_quantity
                 }
-            }
-            )
+            })
             .then(result => {
                 res.json(result);
             });
@@ -146,6 +147,11 @@ module.exports = function (app) {
         });
     });
 
+    // TODO Update card amount from a user's deck
+    /* {
+        
+    } */
+
     // TODO Delete deck from a user's account
     /* {
         user_id: (integer),
@@ -193,10 +199,4 @@ module.exports = function (app) {
             res.json( responseCards );
         });
     });
-
-
-    // TODO: Add a card to the database
-    /* app.post("/api/add-card", (req, res) => {
-        
-    }); */
 };
