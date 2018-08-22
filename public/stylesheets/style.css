@@ -59,6 +59,14 @@ nav {
 
 main {
   font-family: 'Montserrat', sans-serif;
+  height: 100vh;
+  padding-bottom: 100px;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.material-icons:hover {
+  cursor: pointer;
 }
 
 main #con {
@@ -104,8 +112,26 @@ main #title {
   /* justify-self: baseline; */
 }
 
+.round-btn {
+  height: 30px;
+  background-color: #FFF;
+  border: 2px solid;
+  border-color: black;
+  border-radius: 20px;
+  width: 100px;
+  font-weight: bold;
+}
+
+.round-btn:hover {
+  cursor: pointer;
+}
+
 #all-cards {
   grid-area: all-cards;
+}
+
+#card-container {
+  height: 500px;
 }
 
 #login-wrapper {

@@ -7,6 +7,7 @@
 const db = require("../models");
 const mtg = require("mtgsdk");
 
+
 module.exports = function (app) {
     app.post("/api/users", function (req, res) {
         let newUser = new db.User();
@@ -17,6 +18,7 @@ module.exports = function (app) {
     });
 
     // * Route hit when a user logs in
+
     app.post("/api/login", function (req, res) {
         //use sequelize to find their account by name
         db.User.findOne({ where: { user_name: req.body.user_name } }).then(user => {
@@ -32,6 +34,7 @@ module.exports = function (app) {
             }
         })
     })
+
 
     // * Get all decks for a given user
     app.get("/api/users/:id", (req, res) => {
