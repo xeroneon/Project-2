@@ -60,27 +60,6 @@ module.exports = function (app) {
     })
 
     app.get("/test", function (req, res) {
-        // mtg.card.where({ name: 'Squee', pageSize: 1 })
-        //     .then(card => {
-        //         console.log(card);
-        //     })
-
-
-        // var options = {
-        //     method: 'GET',
-        //     url: "http://magictcgprices.appspot.com/api/cfb/price.json?cardname=Dark%20Confidant&setname=ravnica",
-        //     json: true
-        // };
-
-        // request(options, function (error, response, body) {
-        //     if (error) throw new Error(error);
-
-        //     console.log(body);
-
-        //     res.json(body)
-        // });
-
-
         let options = {
             method: 'POST',
             headers: {
@@ -89,14 +68,23 @@ module.exports = function (app) {
             url: 'http://api.tcgplayer.com/catalog/categories/1/search',
             body:
             {
-                filters: [{
+                filters: [
+                    {
                     "name": "productName",
                     "displayName": "Product Name",
                     "inputType": "Text",
                     "items": ["Black Lotus"],
                     "values": ["Black lotus"]
 
-                }]
+                },
+                {
+                    "name": "SetName",
+                    "displayName": "Set Name",
+                    "inputType": "SingleValue",
+                    "items": [],
+                    "values": ["alpha"]
+                }
+            ]
                 // includeAggregates: 'true'
             },
             json: true
@@ -108,52 +96,53 @@ module.exports = function (app) {
             // console.log(body);
 
             let results = body.results;
+            res.json(results)
 
             console.log(results);
-            let options = {
-                method: 'GET',
-                headers: {
-                    Authorization: "bearer " + process.env.BEARER_TOKEN
-                },
-                url: 'http://api.tcgplayer.com/v1.5.0/catalog/products/' + results,
-                // qs: { getExtendedFields: 'true' }
-            };
+            // let options = {
+            //     method: 'GET',
+            //     headers: {
+            //         Authorization: "bearer " + process.env.BEARER_TOKEN
+            //     },
+            //     url: 'http://api.tcgplayer.com/v1.5.0/catalog/products/' + results,
+            //     // qs: { getExtendedFields: 'true' }
+            // };
 
             
-            request(options, function (error, response, body) {
-                if (error) throw new Error(error);
+            // request(options, function (error, response, body) {
+            //     if (error) throw new Error(error);
                 
-                body = JSON.parse(body);
-                let productDetails = body
+            //     body = JSON.parse(body);
+            //     let productDetails = body
 
-                // res.json(productDetails);
-
-
+            //     // res.json(productDetails);
 
 
-                var options = {
-                    method: 'GET',
-                    headers: {
-                        Authorization: "bearer " + process.env.BEARER_TOKEN
-                    },
-                    url: 'http://api.tcgplayer.com/v1.5.0/pricing/product/' + results,
-                    // qs: { getExtendedFields: 'true' }
-                };
+
+
+            //     var options = {
+            //         method: 'GET',
+            //         headers: {
+            //             Authorization: "bearer " + process.env.BEARER_TOKEN
+            //         },
+            //         url: 'http://api.tcgplayer.com/v1.5.0/pricing/product/' + results,
+            //         // qs: { getExtendedFields: 'true' }
+            //     };
         
-                request(options, function (error, response, body) {
-                    if (error) throw new Error(error);
+            //     request(options, function (error, response, body) {
+            //         if (error) throw new Error(error);
         
-                    body = JSON.parse(body);
+            //         body = JSON.parse(body);
         
-                    console.log(body.results)
-                    res.json(body)
-                });
+            //         console.log(body.results)
+            //         res.json(body)
+            //     });
 
 
 
 
 
-            });
+            // });
             
 
         });
@@ -190,7 +179,7 @@ module.exports = function (app) {
             headers: {
                 Authorization: "bearer " + process.env.BEARER_TOKEN
             },
-            url: 'http://api.tcgplayer.com/v1.5.0/catalog/products/8989',
+            url: 'http://api.tcgplayer.com/v1.5.0/catalog/products/1042',
             // qs: { getExtendedFields: 'true' }
         };
 

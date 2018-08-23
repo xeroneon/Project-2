@@ -6,6 +6,7 @@
 
 const db = require("../models");
 const mtg = require("mtgsdk");
+const request = require('request');
 
 
 module.exports = function (app) {
@@ -78,7 +79,6 @@ module.exports = function (app) {
             });
     });
 
-<<<<<<< HEAD
     app.post("/api/add-card-col", function (req, res) {
         db.User.findOne(
             {
@@ -99,48 +99,25 @@ module.exports = function (app) {
             res.json(user);
 
 
-        })
-    })
+        });
+    });
 
-    // TODO Add a card to a user's deck. Requires the following req object:
-=======
+
     // * Add a card to a user's deck. Requires the following req object:
->>>>>>> 2df880980218b0985ecd01c6ebc504a09e04e8d6
     /*{
         deck_id: (integer)
         card_id: (string)
         card_quantity: (integer)
     }*/
     app.post("/api/decks/add-card", (req, res) => {
-<<<<<<< HEAD
-        // db.Deck
-        //     .addCard(db.Card, {
-        //         through: {
-        //             card_quantity: req.body.card_quantity
-        //         }
-        //     })
-        //     .then(result => {
-        //         res.json(result);
-        //     });
 
-        db.Deck.findOne(
-            {
-                where: {
-                    deck_id: req.body.deck_id
-                }
-            }
-        ).then(deck => {
-            deck.addCard(db.Card, {
-                through: {
-=======
-        
         let thisDeck = new db.Deck();
         thisDeck.deck_id = req.body.deck_id;
 
         let newCard = new db.Card();
         newCard.card_id = req.body.card_id;
         newCard.card_quantity = req.body.card_quantity;
-        
+
         thisDeck
             .addCard(
                 newCard, {
@@ -161,14 +138,13 @@ module.exports = function (app) {
         card_quantity: (new quant)
     }*/
     app.put("/api/decks/set-card", (req, res) => {
-        
+
         // let thisDeckComp = new db.DeckComp();
         // thisDeckComp.card_quantity = req.body.card_quantity;
 
         db.DeckComp
             .update(
                 {
->>>>>>> 2df880980218b0985ecd01c6ebc504a09e04e8d6
                     card_quantity: req.body.card_quantity
                 },
                 {
@@ -177,17 +153,10 @@ module.exports = function (app) {
                         card_id: req.body.card_id
                     }
                 }
-<<<<<<< HEAD
-            }).then(results => {
-                res.json(results);
-            })
-        })
-=======
             )
             .then(result => {
                 res.json(result);
             });
->>>>>>> 2df880980218b0985ecd01c6ebc504a09e04e8d6
     });
 
     // * Get a given Deck by ID
@@ -241,7 +210,42 @@ module.exports = function (app) {
 
         const thisCard = req.body;
 
-        db.Card
+        let options = {
+            method: 'POST',
+            headers: {
+                Authorization: "bearer " + process.env.BEARER_TOKEN
+            },
+            url: 'http://api.tcgplayer.com/catalog/categories/1/search',
+            body:
+            {
+                filters: [
+                    {
+                        "name": "productName",
+                        "displayName": "Product Name",
+                        "inputType": "Text",
+                        "items": [thisCard.cardName],
+                        "values": [thisCard.cardName]
+
+                    },
+                    {
+                        "name": "SetName",
+                        "displayName": "Set Name",
+                        "inputType": "SingleValue",
+                        "items": [],
+                        "values": [thisCard.cardSet]
+                    }
+                ]
+                // includeAggregates: 'true'
+            },
+            json: true
+        };
+
+        request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+
+            results = body.results
+
+            db.Card
             .findOrCreate({
                 where: {
                     card_id: req.body.cardID
@@ -254,7 +258,8 @@ module.exports = function (app) {
                     card_rarity: thisCard.cardRarity,
                     card_mana_cost: thisCard.cardMana,
                     card_image: thisCard.cardImage,
-                    card_artist: thisCard.cardArtist
+                    card_artist: thisCard.cardArtist,
+                    tcg_id: results[0]
                 }
             })
             .spread((card, created) => {
@@ -264,6 +269,7 @@ module.exports = function (app) {
                 res.json(card);
                 console.log(card.get("card_name") + " created.");
             });
+        });
     });
 
     // TODO Delete deck from a user's account
@@ -346,14 +352,14 @@ module.exports = function (app) {
 
 
 
-                deck.addCard(newCard, {
-                    through:
-                    {
-                        card_quantity: req.body.card_quantity
-                    }
-                }).then(results => {
-                    res.json(deck);
-                })
+            deck.addCard(newCard, {
+                through:
+                {
+                    card_quantity: req.body.card_quantity
+                }
+            }).then(results => {
+                res.json(deck);
+            })
             // }
             res.json(deck)
         })
