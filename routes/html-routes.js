@@ -36,34 +36,29 @@ module.exports = function (app) {
     });
 
     app.get("/dashboard", function (req, res) {
-        // console.log(req.cookies.user_id);
-        // // let hbsObj = {};
-        // db.User.findOne(
-        //     {
-        //         where: {
-        //             user_id: req.cookies.user_id
-        //         },
-        //         include:[{
-        //             model: db.Deck,
-        //             include: [db.Card]
-        //         }]
-        //     }
-        // ).then(user => {
-        //     console.log(user);
-        // })
-        
-            res.render("dashboard");
+        let user_id = req.body.user_id
 
-
+        db.User.findOne(
+            {
+                where: {
+                    user_id: user_id
+                },
+                include: [
+                    {
+                        model: db.Deck,
+                        include: [
+                            {
+                                model: db.Card,
+                            }
+                        ]
+                    }
+                ]
+            }
+        ).then(user => {
+            res.render("dashboard", user);
+        });
     })
 
-
-
-
-    //    ======================================================================================================================================================
-    //    ======================================================= FOR TEST PURPOSES ============================================================================
-    //    ======================================================================================================================================================
-    
     app.get("/test", function (req, res) {
         // mtg.card.where({ name: 'Squee', pageSize: 1 })
         //     .then(card => {

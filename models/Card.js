@@ -34,6 +34,10 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true
         },
+        tcg_id: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
     });
 
     Card.associate = function (models) {
