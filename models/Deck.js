@@ -23,7 +23,8 @@ module.exports = function (sequelize, DataTypes) {
     Deck.associate = function (models) {
         Deck.belongsToMany(models.Card, {
             through: models.DeckComp,
-            foreignKey: "deck_id"
+            foreignKey: "deck_id",
+            onDelete: "cascade"
         });
     };
 

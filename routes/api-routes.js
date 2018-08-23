@@ -31,9 +31,9 @@ module.exports = function (app) {
             } else {
                 //TODO => create logic for if the password is wrong here
                 console.log("not auth")
-            }
-        })
-    })
+            };
+        });
+    });
 
 
     // * Get all decks for a given user
@@ -50,7 +50,7 @@ module.exports = function (app) {
         });
     });
 
-    // * Test with  Add a deck to a user. Requires the following req object:
+    // * Add a deck to a user. Requires the following req object:
     /*{
         user_id: (integer),
         deck_name: (string)
@@ -68,19 +68,57 @@ module.exports = function (app) {
             });
     });
 
-    // TODO Add a card to a user's deck. Requires the following req object:
+    // * Add a card to a user's deck. Requires the following req object:
     /*{
         deck_id: (integer)
         card_id: (string)
         card_quantity: (integer)
     }*/
     app.post("/api/decks/add-card", (req, res) => {
-        db.Deck
-            .addCard(db.Card, {
-                through: {
-                    card_quantity: req.body.card_quantity
+        
+        let thisDeck = new db.Deck();
+        thisDeck.deck_id = req.body.deck_id;
+
+        let newCard = new db.Card();
+        newCard.card_id = req.body.card_id;
+        newCard.card_quantity = req.body.card_quantity;
+        
+        thisDeck
+            .addCard(
+                newCard, {
+                    through: {
+                        card_quantity: req.body.card_quantity
+                    }
                 }
-            })
+            )
+            .then(result => {
+                res.json(result);
+            });
+    });
+
+    // * Update a card in a user's deck. Requires the following req object:
+    /*{
+        deck_id: (integer)
+        card_id: (string)
+        card_quantity: (new quant)
+    }*/
+    app.put("/api/decks/set-card", (req, res) => {
+        
+        // let thisDeckComp = new db.DeckComp();
+        // thisDeckComp.card_quantity = req.body.card_quantity;
+
+        db.DeckComp
+            .update(
+                {
+                    card_quantity: req.body.card_quantity
+                },
+                {
+                    where: {
+                        deck_id: req.body.deck_id,
+                        card_id: req.body.card_id
+                    }
+                }
+            )
             .then(result => {
                 res.json(result);
             });
@@ -150,11 +188,6 @@ module.exports = function (app) {
         });
     });
 
-    // TODO Update card amount from a user's deck
-    /* {
-        
-    } */
-
     // TODO Delete deck from a user's account
     /* {
         user_id: (integer),
@@ -173,12 +206,6 @@ module.exports = function (app) {
 
     }); */
 
-    // * Search for an MTG card by name
-    /* POST object format:
-        {
-            cardName: (card name as string)
-        }
-    */
     // Returns an array of all cards matching the searched-for card name.
     app.post("/api/search-card", (req, res) => {
 

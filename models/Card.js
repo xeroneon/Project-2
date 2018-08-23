@@ -40,7 +40,8 @@ module.exports = function (sequelize, DataTypes) {
 
         Card.belongsToMany(models.Deck, {
             through: models.DeckComp,
-            foreignKey: "card_id"
+            foreignKey: "card_id",
+            onDelete: "cascade"
         });
     };
 
