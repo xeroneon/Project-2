@@ -9,11 +9,21 @@ const mtg = require("mtgsdk");
 
 
 module.exports = function (app) {
-    app.post("/api/users", function (req, res) {
+    app.post("/api/register-user", function (req, res) {
         let newUser = new db.User();
         req.body.user_password = newUser.genHash(req.body.user_password);
         db.User.create(req.body).then(function (results) {
-            res.json(results);
+
+            db.Deck
+                .create({
+                    user_id: results.user_id,
+                    deck_name: "Collection"
+
+                })
+                .then(deck => {
+                    res.json(deck);
+                });
+            // res.json(results);
         });
     });
 
@@ -25,7 +35,7 @@ module.exports = function (app) {
             //then using a method created on the user model authorizes and checks hashed password and if it returns true(correct password) send back that they are authorized
             if (user.Authorize(req.body.user_password)) {
                 //sends back whether the user is authorized
-                res.cookie("user_password", req.body.user_password, { maxAge: 1000 * 60 * 60 * 24 });
+                res.cookie("user_id", user.user_id, { maxAge: 1000 * 60 * 60 * 24 });
                 res.cookie("user_name", req.body.user_name, { maxAge: 1000 * 60 * 60 * 24 });
                 res.json({ Auth: true });
             } else {
@@ -68,6 +78,29 @@ module.exports = function (app) {
             });
     });
 
+    app.post("/api/add-card-col", function (req, res) {
+        db.User.findOne(
+            {
+                where: {
+                    user_id: req.body.user_id
+                },
+                include: [
+                    {
+                        model: db.Deck,
+                        where: {
+                            deck_name: "Collection"
+                        }
+                    }
+                ]
+            }
+        ).then(user => {
+            console.log(req.body.user_id)
+            res.json(user);
+
+
+        })
+    })
+
     // TODO Add a card to a user's deck. Requires the following req object:
     /*{
         deck_id: (integer)
@@ -75,15 +108,31 @@ module.exports = function (app) {
         card_quantity: (integer)
     }*/
     app.post("/api/decks/add-card", (req, res) => {
-        db.Deck
-            .addCard(db.Card, {
+        // db.Deck
+        //     .addCard(db.Card, {
+        //         through: {
+        //             card_quantity: req.body.card_quantity
+        //         }
+        //     })
+        //     .then(result => {
+        //         res.json(result);
+        //     });
+
+        db.Deck.findOne(
+            {
+                where: {
+                    deck_id: req.body.deck_id
+                }
+            }
+        ).then(deck => {
+            deck.addCard(db.Card, {
                 through: {
                     card_quantity: req.body.card_quantity
                 }
+            }).then(results => {
+                res.json(results);
             })
-            .then(result => {
-                res.json(result);
-            });
+        })
     });
 
     // * Get a given Deck by ID
@@ -99,15 +148,27 @@ module.exports = function (app) {
                 model: db.Card
             }]
         }) */
-        const thisDeck = new db.Deck();
+        // const thisDeck = new db.Deck();
 
-        thisDeck.deck_id = req.params.id;
+        // thisDeck.deck_id = req.params.id;
 
-        thisDeck
-            .getCards()
-            .then(result => {
-                res.json(result);
-            });
+        // thisDeck
+        //     .getCards()
+        //     .then(result => {
+        //         res.json(result);
+        //     });
+
+        db.Deck.findOne(
+            {
+                where: {
+                    deck_id: req.params.id
+                }
+            }
+        ).then(deck => {
+            deck.getCards().then(cards => {
+                res.json(deck);
+            })
+        })
     });
 
     // * Add cards to the database. Requires the following fields in the req object:
@@ -122,32 +183,32 @@ module.exports = function (app) {
         cardArtist: (string)
     } */
     app.post("/api/cards", (req, res) => {
-        
+
         const thisCard = req.body;
-        
+
         db.Card
-        .findOrCreate( {
-            where: {
-                card_id: req.body.cardID
-            },
-            defaults: {
-                card_id : thisCard.cardID,
-                card_name: thisCard.cardName,
-                card_description: thisCard.cardFlavor,
-                card_set: thisCard.cardSet,
-                card_rarity: thisCard.cardRarity,
-                card_mana_cost: thisCard.cardMana,
-                card_image: thisCard.cardImage,
-                card_artist: thisCard.cardArtist
-            }
-        })
-        .spread( (card, created) => {
-            return card;
-        })
-        .then ( card => {
-            res.json( card );
-            console.log( card.get("card_name") + " created." );
-        });
+            .findOrCreate({
+                where: {
+                    card_id: req.body.cardID
+                },
+                defaults: {
+                    card_id: thisCard.cardID,
+                    card_name: thisCard.cardName,
+                    card_description: thisCard.cardFlavor,
+                    card_set: thisCard.cardSet,
+                    card_rarity: thisCard.cardRarity,
+                    card_mana_cost: thisCard.cardMana,
+                    card_image: thisCard.cardImage,
+                    card_artist: thisCard.cardArtist
+                }
+            })
+            .spread((card, created) => {
+                return card;
+            })
+            .then(card => {
+                res.json(card);
+                console.log(card.get("card_name") + " created.");
+            });
     });
 
     // TODO Update card amount from a user's deck
@@ -185,21 +246,72 @@ module.exports = function (app) {
         mtg.card.where({
             name: req.body.cardName
         })
-        .then( resultCards => {
-            responseCards = resultCards.map( card => {
-                return {
-                    cardID: card.id,
-                    cardName: card.name,
-                    cardFlavor: card.flavor,
-                    cardSet: card.setName,
-                    cardRarity: card.rarity,
-                    cardMana: card.manaCost,
-                    cardImage: card.imageUrl,
-                    cardArtist: card.artist
-                };
+            .then(resultCards => {
+                responseCards = resultCards.map(card => {
+                    return {
+                        cardID: card.id,
+                        cardName: card.name,
+                        cardFlavor: card.flavor,
+                        cardSet: card.setName,
+                        cardRarity: card.rarity,
+                        cardMana: card.manaCost,
+                        cardImage: card.imageUrl,
+                        cardArtist: card.artist
+                    };
+                });
+
+                res.json(responseCards);
             });
-            
-            res.json( responseCards );
-        });
     });
+
+
+    app.post("/api/add-card", function (req, res) {
+
+        // let newCard = new db.Card();
+        // newCard.card_id = req.body.card_id;
+        let i = req.body.card_id - 1;
+
+
+        db.Deck.findOne(
+            {
+                where: {
+                    deck_id: req.body.deck_id
+                },
+                include: [{
+                    model: db.Card
+                    // where: {
+                    //     card_id: req.body.card_id
+                    // }
+                }]
+            }
+        ).then(deck => {
+
+            // if(deck.Cards[0] === undefined) {
+            //     let newCard = new db.Card();
+            //     newCard.card_id = req.body.card_id;
+
+            //     deck.addCard(newCard, {through: {card_quantity: req.body.card_quantity}}).then(results => {
+            //         return res.json(results)
+            //     })
+            // } else {
+            //     console.log(deck.Cards[0]);
+
+            let newCard = new db.Card();
+
+            newCard.dataValues.card_id = req.body.card_id
+
+
+
+                deck.addCard(newCard, {
+                    through:
+                    {
+                        card_quantity: req.body.card_quantity
+                    }
+                }).then(results => {
+                    res.json(deck);
+                })
+            // }
+            res.json(deck)
+        })
+    })
 };

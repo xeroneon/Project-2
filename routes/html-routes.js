@@ -36,58 +36,34 @@ module.exports = function (app) {
     });
 
     app.get("/dashboard", function (req, res) {
-        console.log(req.cookies.user_password)
-        // let hbsObj = {};
-        db.User.findOne(
-            {
-                where: {
-                    user_name: req.cookies.user_name
-                }
-            }
-        ).then(user => {
-            let hbsObj = {
-                user: user
-            }
-            db.Deck.findOne(
-                {
-                    where: {
-                        UserUserId: user.dataValues.user_id,
-                        deck_name: "Collection"
-                    }
-                }
-            ).then(deck => {
-                db.DeckComp.findOne(
-                    {
-                        where: {
-                            DeckDeckId: deck.dataValues.deck_id
-                        }
-                    }
-                ).then(deckComp => {
-                    db.Card.findAll(
-                        {
-                            where: {
-                                DeckCompDeckCompId: deckComp.dataValues.deck_comp_id
-                            }
-                        }
-                    ).then(card => {
-                        // console.log(card)
-                        // let hbsObj = {
-                        //     card: card
-                        // }
-
-                        hbsObj.card = card
-                        // hbsObj.card = card;
-                        // console.log(hbsObj);
-                        res.render("dashboard", hbsObj);
-                    })
-                })
-            })
-        })
-
+        // console.log(req.cookies.user_id);
+        // // let hbsObj = {};
+        // db.User.findOne(
+        //     {
+        //         where: {
+        //             user_id: req.cookies.user_id
+        //         },
+        //         include:[{
+        //             model: db.Deck,
+        //             include: [db.Card]
+        //         }]
+        //     }
+        // ).then(user => {
+        //     console.log(user);
+        // })
+        
+            res.render("dashboard");
 
 
     })
 
+
+
+
+    //    ======================================================================================================================================================
+    //    ======================================================= FOR TEST PURPOSES ============================================================================
+    //    ======================================================================================================================================================
+    
     app.get("/test", function (req, res) {
         // mtg.card.where({ name: 'Squee', pageSize: 1 })
         //     .then(card => {
