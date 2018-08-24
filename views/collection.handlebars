@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="/stylesheets/collection.css">
+<span id="collection-id" data-id="{{deck.deck_id}}"></span>
+
+<div class="row">
+    <div class="col s12">
+        <h1 class="white-text">Collection</h1>
+        <a href="#modal1" class="btn blue-grey darken-4 modal-trigger">+ Add Card</a>
+    </div>
+</div>
+
+
+<div class="row">
+    {{#each cards}}
+    <div class="col s12 m3">
+        <div class="card-container">
+            <img src="{{card_image}}">
+            <div class="card__content">
+                <h4 class="card__title">{{card_name}}</h4>
+                <p>Mana Cost: {{card_mana_cost}}</p>
+                <br>
+                <p class="card__text">{{card_text}}</p>
+                <button class="button btn--block card__btn">Delete</button>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+
+</div>
+
+<div id="modal1" class="modal blue-grey darken-4 white-text">
+    <div class="modal-content">
+        <h4>Search for a card</h4>
+        <input type="text" id="search-val" placeholder="Card Name" class="white-text"> {{!--
+        <button id="search-card">Search</button> --}}
+        <div class="modal-footer blue-grey darken-4 white-text">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat white-text">Close</a>
+            <a href="#!" class="waves-effect waves-green btn-flat white-text" id="search-card">Search</a>
+        </div>
+        <div class="row" id="modal-content">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="javascript/add-card.js"></script>
+<script type="text/javascript" src="javascript/remove-card.js"></script>

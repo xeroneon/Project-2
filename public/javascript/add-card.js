@@ -13,6 +13,8 @@ $("#search-card").on("click", function () {
         data: newCard
     }).then(function (res) {
         console.log(res[0])
+        $("#modal-content").html(" ");
+        
 
         for( let i = 0; i < res.length; i++) {
             cardImage = $("<img>").attr("src", res[i].cardImage);
@@ -29,7 +31,7 @@ $("#search-card").on("click", function () {
             cardDesc.attr("id", "card-desc");
     
             addCard = $("<a>").append("Add Card");
-            addCard.attr("class", "waves-effect waves-green btn-flat");
+            addCard.attr("class", "waves-effect waves-green btn-flat white-text");
             addCard.attr("id", "send-card");
             addCard.attr("data-id", res[i].cardID);
             addCard.attr("data-name", res[i].cardName);
@@ -40,7 +42,7 @@ $("#search-card").on("click", function () {
             addCard.attr("data-image", res[i].cardImage);
             addCard.attr("data-artist", res[i].cardArtist);
 
-            col = $("<div>").attr("class", "col s3 modal-card-con");
+            col = $("<div>").attr("class", "col s4 modal-card-con");
     
     
             col.append(cardImage);
@@ -100,9 +102,18 @@ $("body").on("click", "#send-card", function () {
         //user the new user object and send it to the route
         data: newCard
     }).then(function (res) {
-        console.log(res);
-        window.location.reload();
-        // $.ajax("/api/")
+        const data = {
+            deck_id: $("#collection-id").attr("data-id"),
+            card_id: newCard.cardID,
+            card_quantity: 1
+        }
+        $.ajax("/api/decks/add-card", {
+            type: "POST",
+            data: data
+        }).then(function(res) {
+            console.log(res);
+            window.location.reload();
+        })
 
     })
 })

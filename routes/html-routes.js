@@ -36,40 +36,64 @@ module.exports = function (app) {
     });
 
     app.get("/dashboard", function (req, res) {
-<<<<<<< HEAD
-        let user_id = req.cookies.user_id
+       res.render('dashboard');
+       console.log(req.isAuthenticated())
+    });
+
+    app.get("/collection", function(req, res) {
+
+        console.log(req.user);
 
         db.User.findOne(
             {
                 where: {
-                    user_id: user_id
+                    user_id: req.user
                 },
                 include: [
                     {
                         model: db.Deck,
-                        include: [
-                            {
-                                model: db.Card,
-                            }
-                        ]
+                        where: {
+                            deck_name: "collection"
+                        },
+                        include: [db.Card]
                     }
                 ]
             }
         ).then(user => {
-            console.log("user", user.dataValues.Decks);
-            res.render("dashboard", user);
-        });
+
+            console.log(user.dataValues.Decks[0].dataValues.Cards)
+
+            let hbsObj = {
+                user: user.dataValues,
+                deck: user.dataValues.Decks[0].dataValues,
+                cards: user.dataValues.Decks[0].dataValues.Cards
+            }
+            res.render("collection", hbsObj);
+        })
     })
-=======
-       res.render('dashboard');
-       console.log(req.isAuthenticated())
-        // let hbsObj = {};
 
 
 
 
-    });
->>>>>>> b7aa886494526585740c14b98de47a208ef8d0c2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     app.get("/test", function (req, res) {
         let options = {
