@@ -31,8 +31,22 @@ module.exports = function (app) {
         res.render("register");
     })
 
-    app.get("/deckview", function (req, res) {
-        res.render("deckview");
+    app.get("/decks", function (req, res) {
+        db.User.findOne(
+            {
+                where: {
+                    user_id: req.user
+                },
+                include: [db.Deck]
+            }
+        ).then(user => {
+
+            let data = {
+                user: user.dataValues,
+                decks: user.dataValues.Decks
+            }
+            res.render("decks", data);
+        })
     });
 
     app.get("/dashboard", function (req, res) {
