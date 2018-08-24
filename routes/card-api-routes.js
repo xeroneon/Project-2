@@ -1,5 +1,6 @@
 const db = require("../models");
 const mtg = require("mtgsdk");
+const request = require("request");
 
 module.exports = function (app) {
 

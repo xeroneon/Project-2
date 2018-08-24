@@ -1,66 +1,58 @@
-<div id="wrapper">
-    <div id="nav">
-        <i class="material-icons" title="logout">power_settings_new</i>
-        <img src="/images/andrew-vasquez.jpg" id="user_image" class="circle">
-
-        <h4 id="username" data-id="{{dataValues.user_name}}">{{dataValues.user_name}}</h4>
-
-        <ul>
-            {{!--
-            <li>
-                <a href="/dashboard">Home</a>
-            </li> --}}
-            <a href="/dashboard"><li>
-                    Collection
-                </li></a>
-            <a href="/deckview"><li>
-                    Deck
-                </li></a>
-            {{!-- <li>
-                Check Prices
-            </li> --}}
-        </ul>
-    </div>
-
-    <main>
-        <div id="con">
-            <h3 id="title">Collection
-                <hr>
-            </h3>
-            <button id="add-card" class="waves-effect waves-light modal-trigger" href="#modal1">+ Add Card</button>
-            {{!--
-            <a id="add-card" class="waves-effect waves-light modal-trigger" href="#modal1">+ Add Card</a> --}}
-
-            <div id="all-cards" class="row">
-                {{#each dataValues.Decks}}
-                <div class="col s3" id="card-container">
-                    <img src="{{card_image}}">
-                    <p>{{card_name}}</p>
-                    <p>{{card_description}}</p>
-                    <button class="round-btn" id="remove-card" data-id="{{card_id}}">Remove Card</button>
-                </div>
-                {{/each}}
+<link rel="stylesheet" href="/stylesheets/main.css">
+        <!-- Dashboard showcase -->
+    <div id="showcase">
+        <header>
+            <div class='cf navbar'>
+                <ul class='cf'>
+                    <li class="hide-on-small">
+                        <a href='#showcase'>myDeck</a>
+                    </li>
+                    <li>
+                        <a href='#showcase'>Decks</a>
+                    </li>
+                    <li>
+                        <a href='/collection'>Collection</a>
+                    </li>
+                    <li>
+                        <a href='#Logout'>Logout</a>
+                    </li>
+                </ul>
+                <a href='#' id='openup'>myDeck</a>
             </div>
-
+        </header>
+        <div class="main-section container">
+            <h1>myDeck</h1>
+            <h2>Manage and price your cards and decks.</h2>
+            <p class="lead hide-on-small">
+                myDeck is the best way to organize your Magic the Gathering decks, price the cards you already have - and shop for the ones
+                you want.
+            </p>
         </div>
-
-        <!-- Modal Trigger -->
-
-        <!-- Modal Structure -->
-        <div id="modal1" class="modal">
-            <div class="modal-content">
-                <h4>Search for a card</h4>
-                <input type="text" id="search-val" placeholder="Card Name"> {{!--
-                <button id="search-card">Search</button> --}}
-                <div class="row" id="modal-content">
-                </div>
-                <div class="modal-footer">
-                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
-                    <a href="#!" class="waves-effect waves-green btn-flat" id="search-card">Search</a>
-                </div>
-            </div>
-    </main>
     </div>
+    <!-- Overview and API information section -->
+    <section id="overview" class="section">
+        <div class="container">
+            <h2 class="section-head">
+                <i class="fas fa-book-reader"></i> Overview
+            </h2>
+            <h3>Powered by
+                <a href="https://www.tcgplayer.com/" target="blank">TCGPlayer.com</a>
+            </h3>
+            <p class="lead">Accessing TCGPlayer's API Endpoints you are able to:
+                <br> Search for specific cards to add to your inventory.
+                <br> Catalog and organize your decks.
+                <br> And, pull Market Price, Buylist Price and more, to upgrade and improve your deck.
+            </p>
+            <br>
+            <img src="images/tcgplayer.jpg">
+            <p class="text-light">myDeck. available on Desktop and Mobile devices</p>
+        </div>
+    </section>
+    <!-- User Deck section -->
+    <section class="decks" class="section">
+        <div class="container">
+        </div>
+    </section>
 
     <script type="text/javascript" src="javascript/add-card.js"></script>
     <script type="text/javascript" src="javascript/remove-card.js"></script>
