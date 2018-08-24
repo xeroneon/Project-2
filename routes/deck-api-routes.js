@@ -19,14 +19,13 @@ module.exports = function (app) {
 
     // * Add a deck to a user. Requires the following req object:
     /*{
-        user_id: (integer),
         deck_name: (string)
     }*/
     app.post("/api/decks", (req, res) => {
         db.Deck
             .create({
                 // user_id: req.cookies.user_id || req.body.user_id,
-                user_id: req.body.user_id,
+                user_id: req.user,
                 deck_name: req.body.deck_name
 
             })
