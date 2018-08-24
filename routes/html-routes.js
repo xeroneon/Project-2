@@ -36,6 +36,7 @@ module.exports = function (app) {
     });
 
     app.get("/dashboard", function (req, res) {
+<<<<<<< HEAD
         let user_id = req.cookies.user_id
 
         db.User.findOne(
@@ -59,6 +60,16 @@ module.exports = function (app) {
             res.render("dashboard", user);
         });
     })
+=======
+       res.render('dashboard');
+       console.log(req.isAuthenticated())
+        // let hbsObj = {};
+
+
+
+
+    });
+>>>>>>> b7aa886494526585740c14b98de47a208ef8d0c2
 
     app.get("/test", function (req, res) {
         let options = {
