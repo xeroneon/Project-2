@@ -51,12 +51,6 @@ module.exports = function (app) {
             }
         }).then(user => {
             if (user.Authorize(req.body.user_password)) {
-<<<<<<< HEAD
-                //sends back whether the user is authorized
-                res.cookie("user_id", user.user_id, { maxAge: 1000 * 60 * 60 * 24 });
-                res.cookie("user_name", req.body.user_name, { maxAge: 1000 * 60 * 60 * 24 });
-                res.json({ Auth: true });
-=======
                 //log in the user
                 const user_id = user.dataValues.user_id;
                 console.log(user_id);
@@ -69,7 +63,6 @@ module.exports = function (app) {
 
 
                 });
->>>>>>> b7aa886494526585740c14b98de47a208ef8d0c2
             } else {
                 res.json({
                     Auth: false
@@ -256,7 +249,6 @@ function authenticationMiddleware () {
 
         const thisCard = req.body;
 
-<<<<<<< HEAD
         let options = {
             method: 'POST',
             headers: {
@@ -335,31 +327,6 @@ function authenticationMiddleware () {
             });
 
         });
-=======
-        db.Card
-            .findOrCreate({
-                where: {
-                    card_id: req.body.cardID
-                },
-                defaults: {
-                    card_id: thisCard.cardID,
-                    card_name: thisCard.cardName,
-                    card_description: thisCard.cardFlavor,
-                    card_set: thisCard.cardSet,
-                    card_rarity: thisCard.cardRarity,
-                    card_mana_cost: thisCard.cardMana,
-                    card_image: thisCard.cardImage,
-                    card_artist: thisCard.cardArtist
-                }
-            })
-            .spread((card, created) => {
-                return card;
-            })
-            .then(card => {
-                res.json(card);
-                console.log(card.get("card_name") + " created.");
-            });
->>>>>>> b7aa886494526585740c14b98de47a208ef8d0c2
     });
 
     // TODO Delete deck from a user's account
@@ -384,36 +351,22 @@ function authenticationMiddleware () {
     app.post("/api/search-card", (req, res) => {
 
         mtg.card.where({
-<<<<<<< HEAD
             name: req.body.cardName
         })
-=======
-                name: req.body.cardName
-            })
->>>>>>> b7aa886494526585740c14b98de47a208ef8d0c2
             .then(resultCards => {
                 responseCards = resultCards.map(card => {
                     return {
                         cardID: card.id,
                         cardName: card.name,
-<<<<<<< HEAD
                         cardText: card.text,
                         cardSet: card.setName,
                         cardRarity: card.rarity,
                         cardMana: card.manaCost,
                         cardImage: card.imageUrl || "/images/placeholder.png",
-=======
-                        cardFlavor: card.flavor,
-                        cardSet: card.setName,
-                        cardRarity: card.rarity,
-                        cardMana: card.manaCost,
-                        cardImage: card.imageUrl,
->>>>>>> b7aa886494526585740c14b98de47a208ef8d0c2
                         cardArtist: card.artist
                     };
                 });
 
-<<<<<<< HEAD
             //     let options = {
             //         method: 'POST',
             //         headers: {
@@ -527,17 +480,3 @@ function authenticationMiddleware () {
         })
     })
 };
-=======
-                res.json(responseCards);
-            });
-    });
-};
-
-// passport.serializeUser(function(user_id, done) {
-//     done(null, user_id);
-//   });
-
-//   passport.deserializeUser(function(user_id, done) {
-//       done(err, user_id);
-//   });
->>>>>>> b7aa886494526585740c14b98de47a208ef8d0c2
