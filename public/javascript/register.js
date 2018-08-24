@@ -9,7 +9,7 @@ $("#register").on("click", function() {
         user_last_name: $("#register_last_name").val().trim()
     };
 
-    $.ajax("/api/users", {
+    $.ajax("/api/register-user", {
         type: "POST",
         //send the newUser object along with the ajax call
         data: newUser

@@ -3,18 +3,19 @@
         <i class="material-icons" title="logout">power_settings_new</i>
         <img src="/images/andrew-vasquez.jpg" id="user_image" class="circle">
 
-        <h4 id="username">{{user.user_name}}</h4>
+        <h4 id="username" data-id="{{dataValues.user_name}}">{{dataValues.user_name}}</h4>
 
         <ul>
-            {{!-- <li>
+            {{!--
+            <li>
                 <a href="/dashboard">Home</a>
             </li> --}}
             <a href="/dashboard"><li>
-               Collection
-            </li></a>
+                    Collection
+                </li></a>
             <a href="/deckview"><li>
-               Deck
-            </li></a>
+                    Deck
+                </li></a>
             {{!-- <li>
                 Check Prices
             </li> --}}
@@ -31,7 +32,7 @@
             <a id="add-card" class="waves-effect waves-light modal-trigger" href="#modal1">+ Add Card</a> --}}
 
             <div id="all-cards" class="row">
-                {{#each card}}
+                {{#each dataValues.Decks}}
                 <div class="col s3" id="card-container">
                     <img src="{{card_image}}">
                     <p>{{card_name}}</p>
@@ -51,14 +52,15 @@
                 <h4>Search for a card</h4>
                 <input type="text" id="search-val" placeholder="Card Name"> {{!--
                 <button id="search-card">Search</button> --}}
+                <div class="row" id="modal-content">
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                    <a href="#!" class="waves-effect waves-green btn-flat" id="search-card">Search</a>
+                </div>
             </div>
-            <div class="modal-footer">
-                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
-                <a href="#!" class="waves-effect waves-green btn-flat" id="search-card">Search</a>
-            </div>
-        </div>
     </main>
-</div>
+    </div>
 
-<script type="text/javascript" src="javascript/add-card.js"></script>
-<script type="text/javascript" src="javascript/remove-card.js"></script>
+    <script type="text/javascript" src="javascript/add-card.js"></script>
+    <script type="text/javascript" src="javascript/remove-card.js"></script>

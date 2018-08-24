@@ -36,100 +36,127 @@ module.exports = function (app) {
     });
 
     app.get("/dashboard", function (req, res) {
-        console.log(req.cookies.user_password)
-        // let hbsObj = {};
+<<<<<<< HEAD
+        let user_id = req.cookies.user_id
+
         db.User.findOne(
             {
                 where: {
-                    user_name: req.cookies.user_name
-                }
+                    user_id: user_id
+                },
+                include: [
+                    {
+                        model: db.Deck,
+                        include: [
+                            {
+                                model: db.Card,
+                            }
+                        ]
+                    }
+                ]
             }
         ).then(user => {
-            let hbsObj = {
-                user: user
-            }
-            db.Deck.findOne(
-                {
-                    where: {
-                        UserUserId: user.dataValues.user_id,
-                        deck_name: "Collection"
-                    }
-                }
-            ).then(deck => {
-                db.DeckComp.findOne(
-                    {
-                        where: {
-                            DeckDeckId: deck.dataValues.deck_id
-                        }
-                    }
-                ).then(deckComp => {
-                    db.Card.findAll(
-                        {
-                            where: {
-                                DeckCompDeckCompId: deckComp.dataValues.deck_comp_id 
-                            }
-                        }
-                    ).then(card => {
-                        // console.log(card)
-                        // let hbsObj = {
-                        //     card: card
-                        // }
-
-                        hbsObj.card = card
-                        // hbsObj.card = card;
-                        // console.log(hbsObj);
-                        res.render("dashboard", hbsObj);
-                    })
-                })
-            })
-        })
-
-
-
+            console.log("user", user.dataValues.Decks);
+            res.render("dashboard", user);
+        });
     })
+=======
+       res.render('dashboard');
+       console.log(req.isAuthenticated())
+        // let hbsObj = {};
+
+
+
+
+    });
+>>>>>>> b7aa886494526585740c14b98de47a208ef8d0c2
 
     app.get("/test", function (req, res) {
-        mtg.card.where({ name: 'Squee', pageSize: 1 })
-            .then(card => {
-                console.log(card);
-            })
-
-
-        var options = {
+        let options = {
             method: 'GET',
-            url: "http://magictcgprices.appspot.com/api/cfb/price.json?cardname=Dark%20Confidant&setname=ravnica",
-            json: true
-        };
-
-        request(options, function (error, response, body) {
-            if (error) throw new Error(error);
-
-            console.log(body);
-
-            res.json(body)
-        });
-
-
-        var options = {
-            method: 'POST',
             headers: {
                 Authorization: "bearer " + process.env.BEARER_TOKEN
             },
-            url: 'http://api.tcgplayer.com/catalog/categories/1/search',
+            url: 'http://api.tcgplayer.com/catalog/categories/1/search/manifest',
             body:
             {
-                filters: [{ name: 'productName', values: 'Black Lotus' }],
-                includeAggregates: 'true'
-            },
+                filters: [
+                    {
+                    "name": "productName",
+                    "displayName": "Product Name",
+                    "inputType": "Text",
+                    "items": ["Black Lotus"],
+                    "values": ["Black lotus"]
+
+                },
+                {
+                    "name": "SetName",
+                    "displayName": "Set Name",
+                    "inputType": "SingleValue",
+                    "items": [],
+                    "values": ["alpha"]
+                }
+            ],
+            // includeAggregates: 'true'
+        },
             json: true
         };
 
         request(options, function (error, response, body) {
             if (error) throw new Error(error);
 
-            console.log(body);
+            // console.log(body);
 
-            res.json(body)
+            let results = body.results;
+            res.json(results)
+
+            console.log(results);
+            // let options = {
+            //     method: 'GET',
+            //     headers: {
+            //         Authorization: "bearer " + process.env.BEARER_TOKEN
+            //     },
+            //     url: 'http://api.tcgplayer.com/v1.5.0/catalog/products/' + results,
+            //     // qs: { getExtendedFields: 'true' }
+            // };
+
+            
+            // request(options, function (error, response, body) {
+            //     if (error) throw new Error(error);
+                
+            //     body = JSON.parse(body);
+            //     let productDetails = body
+
+            //     // res.json(productDetails);
+
+
+
+
+            //     var options = {
+            //         method: 'GET',
+            //         headers: {
+            //             Authorization: "bearer " + process.env.BEARER_TOKEN
+            //         },
+            //         url: 'http://api.tcgplayer.com/v1.5.0/pricing/product/' + results,
+            //         // qs: { getExtendedFields: 'true' }
+            //     };
+        
+            //     request(options, function (error, response, body) {
+            //         if (error) throw new Error(error);
+        
+            //         body = JSON.parse(body);
+        
+            //         console.log(body.results)
+            //         res.json(body)
+            //     });
+
+
+
+
+
+            // });
+            
+
         });
 
         // res.render("login")
@@ -164,7 +191,7 @@ module.exports = function (app) {
             headers: {
                 Authorization: "bearer " + process.env.BEARER_TOKEN
             },
-            url: 'http://api.tcgplayer.com/v1.5.0/catalog/products/137942',
+            url: 'http://api.tcgplayer.com/v1.5.0/catalog/products/1042',
             // qs: { getExtendedFields: 'true' }
         };
 
