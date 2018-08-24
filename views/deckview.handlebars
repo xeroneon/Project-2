@@ -2,24 +2,33 @@
 
 <div class="row">
     <div class="col s12">
-        <h1 class="white-text">Decks</h1>
-        <a href="#modal1" class="btn blue-grey darken-4 modal-trigger">+ Add Deck</a>
+        <h1 class="white-text">Deck View</h1>
+        <a href="#modal1" class="btn blue-grey darken-4 modal-trigger">+ Add Card</a>
     </div>
 </div>
 
 
 <div class="row">
-    {{#each decks}}
-    <div class="col s12 m3">
-        <div class="card-container">
-            <a href="/decks/{{deck_id}}"><img src="/images/placeholderdeck.png"></a>
-            <div class="card__content">
-                <h4 class="card__title center">{{deck_name}}</h4>
-                {{!-- <button class="button btn--block card__btn">Delete</button> --}}
-            </div>
-        </div>
-    </div>
-    {{/each}}
+    <table class="striped highlight">
+        <thead>
+            <tr>
+                <th>Card Name</th>
+                <th>Mana Cost</th>
+                <th>Desc.</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{#each cards}}
+            <tr>
+                <td>{{card_name}}</td>
+                <td>{{card_mana_cost}}</td>
+                <td>{{card_text}}</td>
+                <td><a href="#" class="btn blue-grey darken-4">Remove</a></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
 
 </div>
 

@@ -45,6 +45,7 @@ module.exports = function (app) {
                 user: user.dataValues,
                 decks: user.dataValues.Decks
             }
+            console.log
             res.render("decks", data);
         })
     });
@@ -83,6 +84,35 @@ module.exports = function (app) {
                 cards: user.dataValues.Decks[0].dataValues.Cards
             }
             res.render("collection", hbsObj);
+        })
+    });
+
+
+    app.get("/decks/:id", function(req, res) {
+        
+        db.User.findOne(
+            {
+                where: {
+                    user_id: req.user
+                },
+                include: [
+                    {
+                        model: db.Deck,
+                        where: {
+                            deck_id: req.params.id
+                        },
+                        include: [db.Card]
+                    }
+                ]
+            }
+        ).then(user => {
+            let hbsObj = {
+                user: user.dataValues,
+                deck: user.dataValues.Decks[0].dataValues,
+                cards: user.dataValues.Decks[0].dataValues.Cards
+            }
+            console.log(user.dataValues.Decks[0].dataValues.Cards)
+            res.render("deckview", hbsObj);
         })
     })
 
