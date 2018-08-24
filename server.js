@@ -33,6 +33,8 @@ app.set("view engine", "handlebars");
 // var routes = require("./controllers/loginController.js");
 require("./routes/html-routes.js")(app);
 require("./routes/api-routes.js")(app);
+require("./routes/card-api-routes.js")(app);
+require("./routes/deck-api-routes.js")(app);
 // app.use(routes);
 
 // Start our server so that it can begin listening to client requests.
