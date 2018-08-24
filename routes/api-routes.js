@@ -3,7 +3,7 @@
     routes folder, e.g., routes/api/users, routes/api/decks, routes/api/cards. I think that this
     may help to isolate issues and prevent us from working on the same files at the same time.
 */
-
+const passport = require("passport");
 const db = require("../models");
 const mtg = require("mtgsdk");
 
@@ -21,19 +21,61 @@ module.exports = function (app) {
 
     app.post("/api/login", function (req, res) {
         //use sequelize to find their account by name
-        db.User.findOne({ where: { user_name: req.body.user_name } }).then(user => {
-            //then using a method created on the user model authorizes and checks hashed password and if it returns true(correct password) send back that they are authorized
+        // db.User.findOne({ where: { user_name: req.body.user_name } }).then(user => {
+        //     //then using a method created on the user model authorizes and checks hashed password and if it returns true(correct password) send back that they are authorized
+        //     if (user.Authorize(req.body.user_password)) {
+        //         //sends back whether the user is authorized
+        //         res.cookie("user_password", req.body.user_password, { maxAge: 1000 * 60 * 60 * 24 });
+        //         res.cookie("user_name", req.body.user_name, { maxAge: 1000 * 60 * 60 * 24 });
+        //         res.json({ Auth: true });
+        //     } else {
+        //         //TODO => create logic for if the password is wrong here
+        //         console.log("not auth")
+        //     };
+        // });
+
+        db.User.findOne({
+            where: {
+                user_name: req.body.user_name
+            }
+        }).then(user => {
             if (user.Authorize(req.body.user_password)) {
-                //sends back whether the user is authorized
-                res.cookie("user_password", req.body.user_password, { maxAge: 1000 * 60 * 60 * 24 });
-                res.cookie("user_name", req.body.user_name, { maxAge: 1000 * 60 * 60 * 24 });
-                res.json({ Auth: true });
+                //log in the user
+                const user_id = user.dataValues.user_id;
+                console.log(user_id);
+                console.log("user found");
+                req.login(user_id, function (err) {
+                    console.log("login hit");
+                    res.json({
+                        Auth: true
+                    });
+
+
+                });
             } else {
-                //TODO => create logic for if the password is wrong here
-                console.log("not auth")
-            };
+                res.json({
+                    Auth: false
+                });
+                //res.render(something to let the browser know its wrong)
+            }
         });
     });
+    passport.serializeUser(function (user_id, done) {
+        done(null, user_id);
+    });
+
+    passport.deserializeUser(function (user_id, done) {
+        done(null, user_id);
+    });
+
+    
+function authenticationMiddleware () {  
+	return (req, res, next) => {
+		console.log(`req.session.passport.user: ${JSON.stringify(req.session.passport)}`);
+	    if (req.isAuthenticated()) return next();
+	    res.redirect('/login')
+	};
+};
 
 
     // * Get all decks for a given user
@@ -75,14 +117,14 @@ module.exports = function (app) {
         card_quantity: (integer)
     }*/
     app.post("/api/decks/add-card", (req, res) => {
-        
+
         let thisDeck = new db.Deck();
         thisDeck.deck_id = req.body.deck_id;
 
         let newCard = new db.Card();
         newCard.card_id = req.body.card_id;
         newCard.card_quantity = req.body.card_quantity;
-        
+
         thisDeck
             .addCard(
                 newCard, {
@@ -103,22 +145,19 @@ module.exports = function (app) {
         card_quantity: (new quant)
     }*/
     app.put("/api/decks/set-card", (req, res) => {
-        
+
         // let thisDeckComp = new db.DeckComp();
         // thisDeckComp.card_quantity = req.body.card_quantity;
 
         db.DeckComp
-            .update(
-                {
-                    card_quantity: req.body.card_quantity
-                },
-                {
-                    where: {
-                        deck_id: req.body.deck_id,
-                        card_id: req.body.card_id
-                    }
+            .update({
+                card_quantity: req.body.card_quantity
+            }, {
+                where: {
+                    deck_id: req.body.deck_id,
+                    card_id: req.body.card_id
                 }
-            )
+            })
             .then(result => {
                 res.json(result);
             });
@@ -160,32 +199,32 @@ module.exports = function (app) {
         cardArtist: (string)
     } */
     app.post("/api/cards", (req, res) => {
-        
+
         const thisCard = req.body;
-        
+
         db.Card
-        .findOrCreate( {
-            where: {
-                card_id: req.body.cardID
-            },
-            defaults: {
-                card_id : thisCard.cardID,
-                card_name: thisCard.cardName,
-                card_description: thisCard.cardFlavor,
-                card_set: thisCard.cardSet,
-                card_rarity: thisCard.cardRarity,
-                card_mana_cost: thisCard.cardMana,
-                card_image: thisCard.cardImage,
-                card_artist: thisCard.cardArtist
-            }
-        })
-        .spread( (card, created) => {
-            return card;
-        })
-        .then ( card => {
-            res.json( card );
-            console.log( card.get("card_name") + " created." );
-        });
+            .findOrCreate({
+                where: {
+                    card_id: req.body.cardID
+                },
+                defaults: {
+                    card_id: thisCard.cardID,
+                    card_name: thisCard.cardName,
+                    card_description: thisCard.cardFlavor,
+                    card_set: thisCard.cardSet,
+                    card_rarity: thisCard.cardRarity,
+                    card_mana_cost: thisCard.cardMana,
+                    card_image: thisCard.cardImage,
+                    card_artist: thisCard.cardArtist
+                }
+            })
+            .spread((card, created) => {
+                return card;
+            })
+            .then(card => {
+                res.json(card);
+                console.log(card.get("card_name") + " created.");
+            });
     });
 
     // TODO Delete deck from a user's account
@@ -210,23 +249,31 @@ module.exports = function (app) {
     app.post("/api/search-card", (req, res) => {
 
         mtg.card.where({
-            name: req.body.cardName
-        })
-        .then( resultCards => {
-            responseCards = resultCards.map( card => {
-                return {
-                    cardID: card.id,
-                    cardName: card.name,
-                    cardFlavor: card.flavor,
-                    cardSet: card.setName,
-                    cardRarity: card.rarity,
-                    cardMana: card.manaCost,
-                    cardImage: card.imageUrl,
-                    cardArtist: card.artist
-                };
+                name: req.body.cardName
+            })
+            .then(resultCards => {
+                responseCards = resultCards.map(card => {
+                    return {
+                        cardID: card.id,
+                        cardName: card.name,
+                        cardFlavor: card.flavor,
+                        cardSet: card.setName,
+                        cardRarity: card.rarity,
+                        cardMana: card.manaCost,
+                        cardImage: card.imageUrl,
+                        cardArtist: card.artist
+                    };
+                });
+
+                res.json(responseCards);
             });
-            
-            res.json( responseCards );
-        });
     });
 };
+
+// passport.serializeUser(function(user_id, done) {
+//     done(null, user_id);
+//   });
+
+//   passport.deserializeUser(function(user_id, done) {
+//       done(err, user_id);
+//   });

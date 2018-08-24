@@ -15,6 +15,7 @@ $("#login").on("click", function() {
         if(req.Auth) {
             window.location.href = "/dashboard";
         } else {
+            
             //TODO => create logic here for if the response is false and let user know password is wrong
         }
     })
