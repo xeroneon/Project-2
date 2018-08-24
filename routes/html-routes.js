@@ -84,9 +84,9 @@ module.exports = function (app) {
                     "items": [],
                     "values": ["alpha"]
                 }
-            ]
-                // includeAggregates: 'true'
-            },
+            ],
+            // includeAggregates: 'true'
+        },
             json: true
         };
 

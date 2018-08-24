@@ -14,29 +14,59 @@ $("#search-card").on("click", function () {
     }).then(function (res) {
         console.log(res[0])
 
-        var cardImage = $("<img>").attr("src", res[0].imageUrl);
-        cardImage.attr("id", "card-image");
+        for( let i = 0; i < res.length; i++) {
+            var cardImage = $("<img>").attr("src", res[0].cardImage);
+            cardImage.attr("id", "card-image");
+    
+    
+            cardName = $("<p>").append(res[0].cardName);
+            cardName.attr("id", "card-name");
+    
+            manaCost = $("<p>").append("Mana Cost:" + res[0].cardMana);
+            manaCost.attr("id", "mana-cost");
+    
+            cardDesc = $("<p>").append(res[0].cardFlavor);
+            cardDesc.attr("id", "card-desc");
+    
+            addCard = $("<a>").append("Add Card");
+            addCard.attr("class", "waves-effect waves-green btn-flat");
+            addCard.attr("id", "send-card");
+
+            col = $("<div>").attr("class", "col s3");
+    
+    
+            col.append(cardImage);
+            col.append(cardName);
+            col.append(manaCost);
+            col.append(cardDesc);
+            col.append(addCard);
+
+            $("#modal-content").append(col);
+        }
+
+        // var cardImage = $("<img>").attr("src", res[0].cardImage);
+        // cardImage.attr("id", "card-image");
 
 
-        cardName = $("<p>").append(res[0].name);
-        cardName.attr("id", "card-name");
+        // cardName = $("<p>").append(res[0].cardName);
+        // cardName.attr("id", "card-name");
 
-        manaCost = $("<p>").append("Mana Cost:" + res[0].manaCost);
-        manaCost.attr("id", "mana-cost");
+        // manaCost = $("<p>").append("Mana Cost:" + res[0].cardMana);
+        // manaCost.attr("id", "mana-cost");
 
-        cardDesc = $("<p>").append(res[0].text);
-        cardDesc.attr("id", "card-desc");
+        // cardDesc = $("<p>").append(res[0].cardFlavor);
+        // cardDesc.attr("id", "card-desc");
 
-        addCard = $("<a>").append("Add Card");
-        addCard.attr("class", "waves-effect waves-green btn-flat");
-        addCard.attr("id", "send-card");
+        // addCard = $("<a>").append("Add Card");
+        // addCard.attr("class", "waves-effect waves-green btn-flat");
+        // addCard.attr("id", "send-card");
 
 
-        $(".modal-content").append(cardImage);
-        $(".modal-content").append(cardName);
-        $(".modal-content").append(manaCost);
-        $(".modal-content").append(cardDesc);
-        $(".modal-content").append(addCard);
+        // $(".modal-content").append(cardImage);
+        // $(".modal-content").append(cardName);
+        // $(".modal-content").append(manaCost);
+        // $(".modal-content").append(cardDesc);
+        // $(".modal-content").append(addCard);
 
 
     })
