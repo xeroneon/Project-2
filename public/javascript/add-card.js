@@ -15,24 +15,32 @@ $("#search-card").on("click", function () {
         console.log(res[0])
 
         for( let i = 0; i < res.length; i++) {
-            var cardImage = $("<img>").attr("src", res[0].cardImage);
+            cardImage = $("<img>").attr("src", res[i].cardImage);
             cardImage.attr("id", "card-image");
     
     
-            cardName = $("<p>").append(res[0].cardName);
+            cardName = $("<p>").append(res[i].cardName);
             cardName.attr("id", "card-name");
     
-            manaCost = $("<p>").append("Mana Cost:" + res[0].cardMana);
+            manaCost = $("<p>").append("Mana Cost:" + res[i].cardMana);
             manaCost.attr("id", "mana-cost");
     
-            cardDesc = $("<p>").append(res[0].cardFlavor);
+            cardDesc = $("<p>").append(res[i].cardText);
             cardDesc.attr("id", "card-desc");
     
             addCard = $("<a>").append("Add Card");
             addCard.attr("class", "waves-effect waves-green btn-flat");
             addCard.attr("id", "send-card");
+            addCard.attr("data-id", res[i].cardID);
+            addCard.attr("data-name", res[i].cardName);
+            addCard.attr("data-text", res[i].cardText);
+            addCard.attr("data-set", res[i].cardSet);
+            addCard.attr("data-rarity", res[i].cardRarity);
+            addCard.attr("data-mana", res[i].cardMana);
+            addCard.attr("data-image", res[i].cardImage);
+            addCard.attr("data-artist", res[i].cardArtist);
 
-            col = $("<div>").attr("class", "col s3");
+            col = $("<div>").attr("class", "col s3 modal-card-con");
     
     
             col.append(cardImage);
@@ -73,19 +81,28 @@ $("#search-card").on("click", function () {
 })
 
 $("body").on("click", "#send-card", function () {
-    console.log($("#card-name").text());
+    // console.log($("#card-name").text());
+    console.log($(this).attr("data-name"))
 
     const newCard = {
-        cardName: $("#card-name").text()
+        cardID: $(this).attr("data-id"),
+        cardName: $(this).attr("data-name"),
+        cardText: $(this).attr("data-text"),
+        cardSet: $(this).attr("data-set"),
+        cardRariy: $(this).attr("data-rarity"),
+        cardMana: $(this).attr("data-mana"),
+        cardImage: $(this).attr("data-image"),
+        cardArtist: $(this).attr("data-artist")
     }
 
-    $.ajax("/api/add-card", {
+    $.ajax("/api/cards", {
         type: "POST",
         //user the new user object and send it to the route
         data: newCard
     }).then(function (res) {
         console.log(res);
         window.location.reload();
+        // $.ajax("/api/")
 
     })
 })

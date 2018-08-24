@@ -9,7 +9,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false
         },
-        card_description: {
+        card_text: {
             type: DataTypes.STRING,
             allowNull: true
         },
@@ -34,9 +34,9 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true
         },
-        tcg_id: {
-            type: DataTypes.STRING,
-            allowNull: false
+        card_tcg_id: {
+            type: DataTypes.INTEGER,
+            allowNull: true
         }
     });
 

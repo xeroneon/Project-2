@@ -36,7 +36,7 @@ module.exports = function (app) {
     });
 
     app.get("/dashboard", function (req, res) {
-        let user_id = req.body.user_id
+        let user_id = req.cookies.user_id
 
         db.User.findOne(
             {
@@ -55,17 +55,18 @@ module.exports = function (app) {
                 ]
             }
         ).then(user => {
+            console.log("user", user.dataValues.Decks);
             res.render("dashboard", user);
         });
     })
 
     app.get("/test", function (req, res) {
         let options = {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 Authorization: "bearer " + process.env.BEARER_TOKEN
             },
-            url: 'http://api.tcgplayer.com/catalog/categories/1/search',
+            url: 'http://api.tcgplayer.com/catalog/categories/1/search/manifest',
             body:
             {
                 filters: [

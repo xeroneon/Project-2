@@ -130,6 +130,15 @@ main #title {
   grid-area: all-cards;
 }
 
+.modal-card-con img {
+  /* height: 400px; */
+  width: 200px;
+}
+
+.modal-card-con {
+  height: 500px;
+}
+
 #card-container {
   height: 500px;
 }

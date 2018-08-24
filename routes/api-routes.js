@@ -199,7 +199,7 @@ module.exports = function (app) {
     /* {
         cardID: (string),
         cardName: (string),
-        cardFlavor: (string),
+        cardText: (string),
         cardSet: (string),
         cardRarity: (string),
         cardMana: (string),
@@ -268,13 +268,13 @@ module.exports = function (app) {
                     defaults: {
                         card_id: thisCard.cardID,
                         card_name: thisCard.cardName,
-                        card_description: thisCard.cardFlavor,
+                        card_text: thisCard.cardText,
                         card_set: thisCard.cardSet,
                         card_rarity: thisCard.cardRarity,
                         card_mana_cost: thisCard.cardMana,
                         card_image: thisCard.cardImage || body.results[0].image,
                         card_artist: thisCard.cardArtist,
-                        tcg_id: results[0]
+                        card_tcg_id: results[0]
                     }
                 })
                 .spread((card, created) => {
@@ -283,6 +283,7 @@ module.exports = function (app) {
                 .then(card => {
                     res.json(card);
                     console.log(card.get("card_name") + " created.");
+                    
                 });
             });
 
@@ -318,7 +319,7 @@ module.exports = function (app) {
                     return {
                         cardID: card.id,
                         cardName: card.name,
-                        cardFlavor: card.flavor,
+                        cardText: card.text,
                         cardSet: card.setName,
                         cardRarity: card.rarity,
                         cardMana: card.manaCost,
