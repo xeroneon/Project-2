@@ -152,7 +152,7 @@ module.exports = function (app) {
     /* {
         cardID: (string),
         cardName: (string),
-        cardFlavor: (string),
+        cardText: (string),
         cardSet: (string),
         cardRarity: (string),
         cardMana: (string),
@@ -171,7 +171,7 @@ module.exports = function (app) {
             defaults: {
                 card_id : thisCard.cardID,
                 card_name: thisCard.cardName,
-                card_description: thisCard.cardFlavor,
+                card_text: thisCard.cardText,
                 card_set: thisCard.cardSet,
                 card_rarity: thisCard.cardRarity,
                 card_mana_cost: thisCard.cardMana,
@@ -217,7 +217,7 @@ module.exports = function (app) {
                 return {
                     cardID: card.id,
                     cardName: card.name,
-                    cardFlavor: card.flavor,
+                    cardText: card.text,
                     cardSet: card.setName,
                     cardRarity: card.rarity,
                     cardMana: card.manaCost,
