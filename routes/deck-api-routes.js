@@ -108,6 +108,32 @@ module.exports = function (app) {
             });
     });
 
+    // * Add a card to a user's deck. Requires the following req object:
+    /*{
+        deck_id: (integer)
+        card_id: (string)
+        card_quantity: (integer)
+    }*/
+    app.delete("/api/decks/remove-card", (req, res) => {
+        
+        db.DeckComp
+            .destroy({
+                where: {
+                    deck_id: req.body.deck_id,
+                    card_id: req.body.card_id
+                }
+            })
+            .then(result => {
+                res.json(result);
+            })
+            .catch( err => {
+                console.log(err);
+                res.json({
+                    error: true
+                });
+            });
+    });
+
     // * Get a given Deck by ID
     app.get("/api/decks/:id", (req, res) => {
         
