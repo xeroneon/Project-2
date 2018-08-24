@@ -112,7 +112,6 @@ module.exports = function (app) {
     /*{
         deck_id: (integer)
         card_id: (string)
-        card_quantity: (integer)
     }*/
     app.delete("/api/decks/remove-card", (req, res) => {
         
