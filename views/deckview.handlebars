@@ -3,7 +3,7 @@
 
 <div class="row">
     <div class="col s12">
-        <h1 class="white-text">Deck View</h1>
+        <h1 class="white-text">{{deck.deck_name}}</h1>
         <a href="#modal1" class="btn blue-grey darken-4 modal-trigger">+ Add Card</a>
     </div>
 </div>
@@ -25,7 +25,7 @@
             <tr>
                 <td>{{card_name}}</td>
                 <td class="center">{{card_mana_cost}}</td>
-                <td>{{card_tcg_id}}</td>
+                <td>{{card_text}}</td>
                 <td class="center">{{DeckComp.dataValues.card_quantity}}</td>
                 <td><a href="#" class="btn blue-grey darken-4" id="increase-card"  data-card-id="{{card_id}}" data-deck-id="{{DeckComp.dataValues.deck_id}}"
                     data-quantity="{{DeckComp.dataValues.card_quantity}}">+1</a></td>

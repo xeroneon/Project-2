@@ -15,7 +15,7 @@ $("#search-card").on("click", function () {
         $("#modal-content").html(" ");
         
 
-        for( let i = 1; i < res.length; i++) {
+        for( let i = 0; i < res.length; i++) {
             cardImage = $("<img>").attr("src", res[i].cardImage);
             cardImage.attr("id", "card-image");
     
