@@ -17,9 +17,13 @@
             <div class="card__content">
                 <h4 class="card__title">{{card_name}}</h4>
                 <p>Mana Cost: {{card_mana_cost}}</p>
+                <p>Owned: {{DeckComp.dataValues.card_quantity}}</p>
                 <br>
                 <p class="card__text">{{card_text}}</p>
-                {{!-- <button class="button btn--block card__btn">Delete</button> --}}
+                <button class="button btn--block card__btn" id="increase-card" data-card-id="{{card_id}}" data-deck-id="{{DeckComp.dataValues.deck_id}}"
+                    data-quantity="{{DeckComp.dataValues.card_quantity}}">Add One</button>
+                <button class="button btn--block card__btn" id="decrease-card" data-card-id="{{card_id}}" data-deck-id="{{DeckComp.dataValues.deck_id}}"
+                    data-quantity="{{DeckComp.dataValues.card_quantity}}">Remove One</button>
             </div>
         </div>
     </div>

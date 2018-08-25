@@ -76,7 +76,7 @@ module.exports = function (app) {
             }
         ).then(user => {
 
-            console.log(user.dataValues.Decks[0].dataValues.Cards)
+            console.log(user.dataValues.Decks[0].dataValues.Cards[0].dataValues.DeckComp)
 
             let hbsObj = {
                 user: user.dataValues,
