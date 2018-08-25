@@ -108,11 +108,10 @@ module.exports = function (app) {
             });
     });
 
-    // * Add a card to a user's deck. Requires the following req object:
+    // * Remove a card from a user's deck. Requires the following req object:
     /*{
         deck_id: (integer)
         card_id: (string)
-        card_quantity: (integer)
     }*/
     app.delete("/api/decks/remove-card", (req, res) => {
         

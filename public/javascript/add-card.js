@@ -116,4 +116,62 @@ $("body").on("click", "#send-card", function () {
         })
 
     })
+});
+
+
+$("body").on("click","#increase-card", function() {
+
+    const newCard = {
+        card_id: $(this).attr("data-card-id"),
+        deck_id: $(this).attr("data-deck-id"),
+        card_quantity: parseInt($(this).attr("data-quantity")) + 1
+    }
+
+    console.log(newCard.card_quantity);
+
+
+
+    $.ajax("/api/decks/set-card", {
+        type: "PUT",
+        //user the new user object and send it to the route
+        data: newCard
+    }).then(function (res) {
+        console.log(res);
+        console.log("clicked")
+        window.location.reload();
+    })
+})
+
+$("body").on("click", "#decrease-card", function() {
+
+    const newCard = {
+        card_id: $(this).attr("data-card-id"),
+        deck_id: $(this).attr("data-deck-id"),
+        card_quantity: parseInt($(this).attr("data-quantity")) - 1
+    }
+
+    console.log(newCard.card_quantity);
+
+    if(parseInt($(this).attr("data-quantity")) > 1) {
+        $.ajax("/api/decks/set-card", {
+            type: "PUT",
+            //user the new user object and send it to the route
+            data: newCard
+        }).then(function (res) {
+            console.log(res);
+            console.log("clicked")
+            window.location.reload();
+        })
+    } else {
+        $.ajax("/api/decks/remove-card", {
+            type: "DELETE",
+            //user the new user object and send it to the route
+            data: newCard
+        }).then(function (res) {
+            console.log(res);
+            console.log("clicked")
+            window.location.reload();
+        })
+    }
+
 })
