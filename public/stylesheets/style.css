@@ -1,0 +1,295 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+/* #wrapper {
+    background-color: #FFF;
+    display: grid;
+    grid-template-columns: 5fr 21fr;
+    grid-column-gap: 1px;
+    grid-row-gap: 20px;
+    justify-items: stretch;
+    align-items: stretch;
+} */
+
+nav {
+    background-color: #7B8AC1;
+}
+
+#nav {
+  height: 100vh;
+  background-image: linear-gradient(
+    -45deg, 
+    #6699cc, #4d5fa3
+  );
+  font-family: 'Montserrat', sans-serif;
+  color: #FFF;
+}
+
+
+#nav ul {
+  margin-top: 20%;
+  background-color: rgba(255, 255, 255, .3);
+}
+
+#nav li {
+  margin-bottom: 10%;
+  padding-left: 15%;
+  padding-top: 7%;
+  padding-bottom: 7%;
+}
+
+#nav li:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, .5)
+}
+
+#user_image {
+  width: 50%;
+  display:block;
+  margin:auto;
+  margin-top: 50px;
+}
+
+#username {
+  text-align: center;
+  font-weight: bold;
+}
+
+/* main {
+  font-family: 'Montserrat', sans-serif;
+  height: 100vh;
+  padding-bottom: 100px;
+  overflow: scroll;
+  overflow-x: hidden;
+} */
+
+.material-icons:hover {
+  cursor: pointer;
+}
+
+/* main #con {
+  padding-left: 10%;
+  padding-top: 5%;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr auto;
+  grid-column-gap: 1px;
+  grid-row-gap: 0px;
+  justify-items: stretch;
+  align-items: stretch;
+  grid-template-areas: 
+  "title add-card"
+  "all-cards all-cards";
+} */
+/* 
+hr {
+  display: block;
+  width: 500px;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+} */
+
+/* main #title {
+  grid-area: title;
+} */
+
+/* #add-card {
+  grid-area: add-card;
+  height: 30px;
+  background-color: #FFF;
+  border: 2px solid;
+  border-color: black;
+  border-radius: 20px;
+  width: 100px;
+  margin-top:auto;
+  margin-bottom: auto;
+  font-weight: bold;
+  /* justify-self: baseline; */
+} */
+
+/* .round-btn {
+  height: 30px;
+  background-color: #FFF;
+  border: 2px solid;
+  border-color: black;
+  border-radius: 20px;
+  width: 100px;
+  font-weight: bold;
+}
+
+.round-btn:hover {
+  cursor: pointer;
+} */
+
+/* #all-cards {
+  grid-area: all-cards;
+} */
+
+.modal-card-con img {
+  /* height: 400px; */
+  width: 200px;
+}
+
+.modal-card-con {
+  height: 500px;
+}
+
+#card-container {
+  height: 500px;
+}
+
+#login-wrapper {
+  width: 100vw;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/MAgic-title.png);
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+}
+
+.login-page {
+  width: 360px;
+  padding: 10% 0 0;
+  margin:  auto;
+}
+
+.form {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.4);
+  /* background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(images/635639924735451400.jpeg); */
+  background-size: contain;
+  background-position: center;
+  max-width: 360px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+}
+
+.form input {
+  font-family: "Roboto", sans-serif;
+  outline: 1;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px; 
+}
+
+.form button {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #4caf50;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.form button:hover, .form button:active {
+  background: #43a047;
+}
+
+.form .message {
+  margin: 15px 0 0;
+  color: aliceblue;
+  font-size: 14px;
+}
+
+.form .message a {
+  color: #edff4d;
+  text-decoration: none;
+}
+
+.form .registration-form {
+  display: none;
+}
+
+/* scrollbar style*/
+
+html::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+html::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+html::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #555;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*--------------- Overwriting materialize form colors */
+   /* label color*/
+.input-field input {
+    color: #FFF !important;
+}
+.input-field label {
+    color: #FFF;
+}
+/* label focus color */
+.input-field input[type=text]:focus + label {
+  color: #FFF;
+}
+/* label underline focus color */
+.input-field input[type=text]:focus {
+  border-bottom: 1px solid #FFF;
+  box-shadow: 0 1px 0 0 #000;
+}
+/* valid color */
+.input-field input[type=text].valid {
+  border-bottom: 1px solid #FFF;
+  box-shadow: 0 1px 0 0 #000;
+}
+/* invalid color */
+.input-field input[type=text].invalid {
+  border-bottom: 1px solid #FFF;
+  box-shadow: 0 1px 0 0 #000;
+}
+/* icon prefix focus color */
+.input-field .prefix.active {
+  color: #FFF;
+}
+      

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>myDeck</title>
+    <!-- google jquery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/style.css"> {{!--
+    <link rel="stylesheet" href="/stylesheets/main.css"> --}}
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+</head>
+
+<body>
+    {{!-- TEST START --}}
+    <link rel="stylesheet" href="/stylesheets/main.css">
+    <!-- Dashboard showcase -->
+    <header>
+        <div class='navbar'>
+            <ul class='cf'>
+                <li class="hide-on-small">
+                    <a href='/dashboard'>myDeck</a>
+                </li>
+                <li>
+                    <a href='/decks'>Decks</a>
+                </li>
+                <li>
+                    <a href='/collection'>Collection</a>
+                </li>
+                <li>
+                    <a href='#Logout'>Logout</a>
+                </li>
+            </ul>
+            <a href='#' id='openup'>myDeck</a>
+        </div>
+    </header>
+
+    {{!-- TEST END --}} {{{body}}}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.modal').modal();
+        });
+    </script>
+
+    <script type="javascript" src="../javascript/javascript.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="/stylesheets/decks.css">
+
+<div class="row">
+    <div class="col s12">
+        <h1 class="white-text">Decks</h1>
+        <a href="#modal1" class="btn blue-grey darken-4 modal-trigger">+ Add Deck</a>
+    </div>
+</div>
+
+
+<div class="row">
+    {{#each decks}}
+    <div class="col s12 m3">
+        <div class="card-container">
+            <a href="/decks/{{deck_id}}"><img src="/images/placeholderdeck.png"></a>
+            <div class="card__content">
+                <h4 class="card__title center">{{deck_name}}</h4>
+                {{!-- <button class="button btn--block card__btn">Delete</button> --}}
+            </div>
+        </div>
+    </div>
+    {{/each}}
+
+</div>
+
+<div id="modal1" class="modal blue-grey darken-4 white-text">
+    <div class="modal-content">
+        <h4>Search for a card</h4>
+        <input type="text" id="search-val" placeholder="Deck Name" class="white-text"> {{!--
+        <button id="search-card">Search</button> --}}
+        <div class="modal-footer blue-grey darken-4 white-text">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat white-text" id="close-modal">Close</a>
+            <a href="#!" class="waves-effect waves-green btn-flat white-text" id="add-deck">Add Deck</a>
+        </div>
+        <div class="row" id="modal-content">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="javascript/add-deck.js"></script>
+<script type="text/javascript" src="javascript/remove-card.js"></script>
+<script type="text/javascript" src="javascript/close-modal.js"></script>

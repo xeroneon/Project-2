@@ -1,0 +1,220 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+@import url('https://fonts.googleapis.com/css?family=PT+Sans');
+
+/* CSS variables */
+:root {
+    --primary-color: #b90415;
+    --primary-color-hover: #d3071b;
+    --secondary-color: #103063;
+    --secondary-color-hover: #143f85;
+    --light-color: #f4f4f4;
+}
+
+body {
+    /* font-family: 'PT Sans', sans-serif; */
+    font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    /* background-color: #252529; */
+    background-image: linear-gradient(-20deg, #1a1a1a, rgb(75, 3, 60), #252529);
+    margin: 0;
+    color: #fff;
+    line-height: 1.6;
+    padding: 0;
+}
+
+h1 {
+    margin-top: 100px;
+    margin-bottom: 50px;
+}
+
+img {
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: #cccc;
+}
+
+/* Sections */
+.section {
+    padding: 2rem 0;
+}
+
+.section-head {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+.section h3 {
+    font-size: 1.6rem;
+}
+
+.section a:hover {
+    color: #d3071b;
+}
+
+/* Showcase */
+#showcase {
+    margin: 0;
+    padding: 0;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/magic_the_gathering_mana_wallpaper_by_amphetamine_ashley-d6l0g9d.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow-y: hidden;
+}
+
+#showcase .container {
+    margin-top: 25vh;
+}
+
+#showcase h1 {
+    font-size: 4rem;
+    margin-bottom: 0;
+}
+
+#showcase h2 {
+    font-size: 2rem;
+}
+
+/* Container */
+.container {
+    max-width: 1180px;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0 3rem;
+}
+
+.mb {
+    margin-bottom: 1rem;
+}
+
+.mt {
+    margin-top: 1rem;
+}
+
+.lead {
+    font-size: 1.3rem;
+}
+
+/* Navigation */
+.navbar {
+    height: 40px;
+    width: 100%;
+    background-color: #333;
+    background-image: linear-gradient(#000000, rgba(88, 88, 88, 0.8));
+    color: #eee;
+    position: fixed;
+    margin: 0;
+}
+
+.navbar ul {
+    padding: 0;
+    margin: 0;
+}
+
+.navbar li {
+    display: inline;
+    float: left;
+}
+
+.navbar a {
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px 0;
+    color: #eee;
+    text-decoration: none;
+}
+
+.navbar li:hover {
+    background-color: #444;
+}
+
+.navbar a#openup {
+    display: none;
+}
+
+@media screen and (max-width: 580px) {
+    .hide-on-small {
+        display: none;
+    }
+
+    #showcase {
+        height: 50vh;
+    }
+    #showcase .container {
+        margin-top: 15vh;
+    }
+    #showcase h1 {
+        font-size: 3rem;
+    }
+    #showcase h2 {
+        font-size: 1.5rem;
+    }
+    .navbar {
+        height: auto;
+        border-bottom: 0;
+    }
+    .navbar ul {
+        display: none;
+        height: auto;
+    }
+    .navbar li {
+        width: 100%;
+        float: left;
+        position: relative;
+    }
+    .navbar a {
+        text-align: left;
+        width: 100%;
+        text-indent: 25px;
+        background: #333;
+        border-bottom: 1px solid #555;
+    }
+    .navbar a:hover {
+        background: #444;
+    }
+    .navbar a#openup:after {
+        content: "|||";
+        transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+        /* IE 9 */
+        -webkit-transform: rotate(-90deg);
+        /* Safari and Chrome */
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+        position: absolute;
+        right: 5px;
+        top: 20px;
+    }
+    .navbar a#openup {
+        display: block;
+        background-color: #333;
+        width: 100%;
+        position: relative;
+    }
+}
+
+.cf:before,
+.cf:after {
+    content: "";
+    display: table;
+}
+
+.cf:after {
+    clear: both;
+}
+
+.cf {
+    zoom: 1;
+}
