@@ -15,7 +15,7 @@ $("#search-card").on("click", function () {
         $("#modal-content").html(" ");
         
 
-        for( let i = 0; i < res.length; i++) {
+        for( let i = 1; i < res.length; i++) {
             cardImage = $("<img>").attr("src", res[i].cardImage);
             cardImage.attr("id", "card-image");
     
@@ -25,6 +25,8 @@ $("#search-card").on("click", function () {
     
             manaCost = $("<p>").append("Mana Cost:" + res[i].cardMana);
             manaCost.attr("id", "mana-cost");
+
+            cardSet = $("<p>").append("Set:" + res[i].cardSet);
     
             cardDesc = $("<p>").append(res[i].cardText);
             cardDesc.attr("id", "card-desc");
@@ -47,6 +49,7 @@ $("#search-card").on("click", function () {
             col.append(cardImage);
             col.append(cardName);
             col.append(manaCost);
+            col.append(cardSet);
             col.append(cardDesc);
             col.append(addCard);
 
