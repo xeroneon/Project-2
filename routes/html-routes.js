@@ -76,7 +76,7 @@ module.exports = function (app) {
             }
         ).then(user => {
 
-            console.log(user.dataValues.Decks[0].dataValues.Cards[0].dataValues.DeckComp)
+            // console.log(user.dataValues.Decks[0].dataValues.Cards[0].dataValues.DeckComp)
 
             let hbsObj = {
                 user: user.dataValues,
@@ -111,8 +111,38 @@ module.exports = function (app) {
                 deck: user.dataValues.Decks[0].dataValues,
                 cards: user.dataValues.Decks[0].dataValues.Cards
             }
-            console.log(user.dataValues.Decks[0].dataValues.Cards)
-            res.render("deckview", hbsObj);
+
+            // let productArr = [];
+
+            // for (let i = 0; i < user.dataValues.Decks[0].dataValues.Cards.length; i++) {
+            //     if(user.dataValues.Decks[0].dataValues.Cards[i].dataValues.card_tcg_id) {
+            //         productArr.push(user.dataValues.Decks[0].dataValues.Cards[i].dataValues.card_tcg_id)
+            //     }
+            // }
+
+            // console.log("Product Array: ", productArr)
+
+            // var options = {
+            //     method: 'GET',
+            //     headers: {
+            //         Authorization: "bearer " + process.env.BEARER_TOKEN
+            //     },
+            //     url: 'http://api.tcgplayer.com/v1.5.0/pricing/product/' + productArr,
+            //     // qs: { getExtendedFields: 'true' }
+            // };
+    
+            // request(options, function (error, response, body) {
+            //     if (error) throw new Error(error);
+    
+            //     body = JSON.parse(body);
+    
+            //     console.log("body: ", body)
+                // res.json(body)
+                // console.log(user.dataValues.Decks[0].dataValues.Cards)
+                res.render("deckview", hbsObj);
+            // });
+
+
         })
     })
 
