@@ -2,20 +2,20 @@ const db = require("../models");
 const request = require('request');
 require('dotenv').config();
 const mtg = require('mtgsdk')
-
+const path = require("path");
 
 
 module.exports = function (app) {
 
     app.get("/", function (req, res) {
         if (req.cookies.user_password === undefined) {
-            res.render("login");
+            res.sendFile(path.join(__dirname, "../public/html/login.html"));
         } else if (req.cookies.user_password) {
             db.User.findOne({ where: { user_name: req.cookies.user_name } }).then(user => {
                 if (user.Authorize(req.cookies.user_password)) {
                     res.redirect("/dashboard");
                 } else {
-                    res.render("login");
+                    res.sendFile(path.join(__dirname, "../public/html/login.html"));
                 }
             })
         }
