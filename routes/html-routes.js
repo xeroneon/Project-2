@@ -2,20 +2,20 @@ const db = require("../models");
 const request = require('request');
 require('dotenv').config();
 const mtg = require('mtgsdk')
-
+const path = require("path");
 
 
 module.exports = function (app) {
 
     app.get("/", function (req, res) {
         if (req.cookies.user_password === undefined) {
-            res.render("login");
+            res.sendFile(path.join(__dirname, "../public/html/login.html"));
         } else if (req.cookies.user_password) {
             db.User.findOne({ where: { user_name: req.cookies.user_name } }).then(user => {
                 if (user.Authorize(req.cookies.user_password)) {
                     res.redirect("/dashboard");
                 } else {
-                    res.render("login");
+                    res.sendFile(path.join(__dirname, "../public/html/login.html"));
                 }
             })
         }
@@ -76,7 +76,7 @@ module.exports = function (app) {
             }
         ).then(user => {
 
-            console.log(user.dataValues.Decks[0].dataValues.Cards[0].dataValues.DeckComp)
+            // console.log(user.dataValues.Decks[0].dataValues.Cards[0].dataValues.DeckComp)
 
             let hbsObj = {
                 user: user.dataValues,
@@ -112,35 +112,35 @@ module.exports = function (app) {
                 cards: user.dataValues.Decks[0].dataValues.Cards
             }
 
-            let productArr = [];
+            // let productArr = [];
 
-            for (let i = 0; i < user.dataValues.Decks[0].dataValues.Cards.length; i++) {
-                if(user.dataValues.Decks[0].dataValues.Cards[i].dataValues.card_tcg_id) {
-                    productArr.push(user.dataValues.Decks[0].dataValues.Cards[i].dataValues.card_tcg_id)
-                }
-            }
+            // for (let i = 0; i < user.dataValues.Decks[0].dataValues.Cards.length; i++) {
+            //     if(user.dataValues.Decks[0].dataValues.Cards[i].dataValues.card_tcg_id) {
+            //         productArr.push(user.dataValues.Decks[0].dataValues.Cards[i].dataValues.card_tcg_id)
+            //     }
+            // }
 
-            console.log("Product Array: ", productArr)
+            // console.log("Product Array: ", productArr)
 
-            var options = {
-                method: 'GET',
-                headers: {
-                    Authorization: "bearer " + process.env.BEARER_TOKEN
-                },
-                url: 'http://api.tcgplayer.com/v1.5.0/pricing/product/' + productArr,
-                // qs: { getExtendedFields: 'true' }
-            };
+            // var options = {
+            //     method: 'GET',
+            //     headers: {
+            //         Authorization: "bearer " + process.env.BEARER_TOKEN
+            //     },
+            //     url: 'http://api.tcgplayer.com/v1.5.0/pricing/product/' + productArr,
+            //     // qs: { getExtendedFields: 'true' }
+            // };
     
-            request(options, function (error, response, body) {
-                if (error) throw new Error(error);
+            // request(options, function (error, response, body) {
+            //     if (error) throw new Error(error);
     
-                body = JSON.parse(body);
+            //     body = JSON.parse(body);
     
-                console.log("body: ", body)
+            //     console.log("body: ", body)
                 // res.json(body)
                 // console.log(user.dataValues.Decks[0].dataValues.Cards)
                 res.render("deckview", hbsObj);
-            });
+            // });
 
 
         })

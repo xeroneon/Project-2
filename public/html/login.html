@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Card Collection</title>
+    <!-- google jquery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+</head>
+
+<body>
+    
+    <div id="login-wrapper">
+    
+        <div class="login-page">
+            <div class="form">
+                <form class="registration-form">
+                    <input type="text" placeholder="First Name" id="register_first_name" class="white-text">
+                    <input type="text" placeholder="Last Name" id="register_last_name" class="white-text">
+                    <input type="text" placeholder="user name" id="register_user_name" class="white-text">
+                    <input type="password" placeholder="password" id="register_password" class="white-text">
+                    <input type="text" placeholder="email" id="register_email" class="white-text">
+                    <button id="register">Register</button>
+                    <p class="message">Already a Member?
+                        <a href="#">Login</a>
+                    </p>
+                </form>
+    
+                <form class="login-form">
+                    <input type="text" placeholder="user name" id="user_name" class="white-text">
+                    <input type="password" placeholder="password" id="user_password" class="white-text">
+                    <button id="login">Login</button>
+                    <p class="message">Not a Member?
+                        <a href="#">Register</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    
+    
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    
+    <script>
+        $(".message a").click(function () {
+            $("form").animate({ height: "toggle", opacity: "toggle" }, "slow")
+        });
+    </script>
+    
+    <script type="text/javascript" src="javascript/login.js"></script>
+    <script type="text/javascript" src="javascript/register.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.modal').modal();
+        });
+    </script>
+
+    <script type="javascript" src="../javascript/javascript.js"></script>
+</body>
+
+</html>
