@@ -145,7 +145,7 @@ main #title {
 
 #login-wrapper {
   width: 100vw;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/magic_the_gathering_symbols_by_thekagestar-d37388h.png);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/MAgic-title.png);
   height: 100vh;
   background-size: cover;
   background-position: center;
@@ -213,6 +213,28 @@ main #title {
 
 .form .registration-form {
   display: none;
+}
+
+/* scrollbar style*/
+
+html::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+html::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+html::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #555;
 }
 
 
